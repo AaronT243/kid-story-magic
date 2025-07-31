@@ -244,14 +244,15 @@ const Story = () => {
           {story.status === 'completed' && story.content ? (
             <Card className="bg-background/50 backdrop-blur-sm border-border/50">
               <CardHeader>
-                <div className="flex justify-between items-start">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
                   <CardTitle>Histoire</CardTitle>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 order-first sm:order-last">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={handleExportPDF}
                       disabled={pdfLoading}
+                      className="flex-1 sm:flex-none"
                     >
                       {pdfLoading ? (
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -265,6 +266,7 @@ const Story = () => {
                       size="sm"
                       onClick={() => handlePrintOrder('hardcover_book')}
                       disabled={printLoading}
+                      className="flex-1 sm:flex-none"
                     >
                       {printLoading ? (
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
