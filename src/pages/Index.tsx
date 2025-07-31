@@ -58,7 +58,11 @@ const Index = () => {
         
         {user ? (
           <Button size="lg" className="text-lg px-8 py-6" asChild>
-            <Link to="/create-story">{t('home.cta')}</Link>
+            <Link to="/create-story">
+              {profile?.stories_created_this_month && profile.stories_created_this_month > 0 
+                ? "Continuer à créer mes histoires" 
+                : "Créer ma première histoire"}
+            </Link>
           </Button>
         ) : (
           <Button size="lg" className="text-lg px-8 py-6" asChild>
