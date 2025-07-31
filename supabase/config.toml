@@ -11,3 +11,12 @@ verify_jwt = true
 
 [functions.customer-portal]
 verify_jwt = true
+
+[functions.export-pdf]
+verify_jwt = true
+
+[functions.create-print-order]
+verify_jwt = true
+
+[functions.process-print-payment]
+verify_jwt = true
