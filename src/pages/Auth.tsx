@@ -9,7 +9,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { toast } from '@/hooks/use-toast';
-import LanguageSelector from '@/components/LanguageSelector';
 import { Link } from 'react-router-dom';
 
 const Auth: React.FC = () => {
@@ -113,9 +112,6 @@ const Auth: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/20 via-background to-secondary/20 p-4">
       <div className="w-full max-w-md space-y-4">
-        <div className="flex justify-center mb-6">
-          <LanguageSelector />
-        </div>
         
         <Card className="bg-background/80 backdrop-blur-sm border-border/50">
           <CardHeader className="space-y-1">
