@@ -91,7 +91,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         document: {
-          document_template_id: 'story-template', // You'll need to create this template in PdfMonkey
+          document_template_id: '8136431D-B530-4158-920B-9D4A7964AC40',
           payload: templateData,
           meta: {
             _filename: `${story.title.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`
