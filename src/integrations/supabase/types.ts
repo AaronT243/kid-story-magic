@@ -65,6 +65,54 @@ export type Database = {
         }
         Relationships: []
       }
+      stories: {
+        Row: {
+          characters: string[] | null
+          child_age: number
+          child_name: string
+          content: string | null
+          created_at: string
+          id: string
+          illustration_urls: string[] | null
+          status: string | null
+          story_length: string | null
+          theme: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          characters?: string[] | null
+          child_age: number
+          child_name: string
+          content?: string | null
+          created_at?: string
+          id?: string
+          illustration_urls?: string[] | null
+          status?: string | null
+          story_length?: string | null
+          theme?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          characters?: string[] | null
+          child_age?: number
+          child_name?: string
+          content?: string | null
+          created_at?: string
+          id?: string
+          illustration_urls?: string[] | null
+          status?: string | null
+          story_length?: string | null
+          theme?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
