@@ -542,49 +542,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer Magique */}
-      <footer className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center justify-center space-x-2 mb-8"
-            >
-              <Sparkles className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold text-foreground">StoryKidAI</span>
-              <Sparkles className="h-8 w-8 text-secondary" />
-            </motion.div>
-            
-            <p className="text-xl text-primary font-medium mb-8">
-              Offrez une histoire inoubliable à votre enfant 💜
-            </p>
-            
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground mb-8">
-              <Link to="/terms" className="hover:text-primary transition-colors">
-                Conditions générales
-              </Link>
-              <Link to="/privacy" className="hover:text-primary transition-colors">
-                Confidentialité
-              </Link>
-              <Link to="/contact" className="hover:text-primary transition-colors">
-                Contact
-              </Link>
-            </div>
-            
-            <div className="flex justify-center space-x-4">
-              <motion.div whileHover={{ scale: 1.1 }} className="text-primary">
-                <Heart className="h-6 w-6" />
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.1 }} className="text-secondary">
-                <Sparkles className="h-6 w-6" />
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.1 }} className="text-accent">
-                <Star className="h-6 w-6" />
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </footer>
       <Footer />
     </div>
   );
