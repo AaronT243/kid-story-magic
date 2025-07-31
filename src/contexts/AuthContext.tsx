@@ -8,7 +8,7 @@ interface Profile {
   first_name?: string;
   last_name?: string;
   preferred_language: 'fr' | 'en' | 'es' | 'pt';
-  subscription_plan: 'starter' | 'premium';
+  subscription_plan: 'free' | 'starter' | 'premium';
   subscription_active: boolean;
   stories_created_this_month: number;
   max_stories_per_month: number;
