@@ -1,4 +1,5 @@
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 
 const Privacy = () => {
   return (
@@ -55,6 +56,7 @@ const Privacy = () => {
           </section>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, Clock, HelpCircle } from "lucide-react";
 
+import { Mail, Clock, HelpCircle } from "lucide-react";
 const Contact = () => {
   return (
     <div className="min-h-screen bg-background">
@@ -52,6 +53,7 @@ const Contact = () => {
           </Card>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

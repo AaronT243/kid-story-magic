@@ -1,4 +1,5 @@
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 
 const Terms = () => {
   return (
@@ -75,6 +76,7 @@ const Terms = () => {
           </section>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

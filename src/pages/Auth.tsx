@@ -5,10 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { toast } from '@/hooks/use-toast';
 import LanguageSelector from '@/components/LanguageSelector';
+import { Link } from 'react-router-dom';
 
 const Auth: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -20,6 +22,8 @@ const Auth: React.FC = () => {
     lastName: '',
     confirmPassword: '',
   });
+  const [gdprConsent, setGdprConsent] = useState(false);
+  const [newsletterConsent, setNewsletterConsent] = useState(false);
 
   const { signIn, signUp, user } = useAuth();
   const { t } = useLanguage();
@@ -47,6 +51,15 @@ const Auth: React.FC = () => {
 
     try {
       if (isSignUp) {
+        if (!gdprConsent) {
+          toast({
+            title: 'Erreur',
+            description: 'Vous devez accepter les conditions générales et la politique de confidentialité',
+            variant: 'destructive',
+          });
+          return;
+        }
+
         if (formData.password !== formData.confirmPassword) {
           toast({
             title: 'Erreur',
@@ -183,6 +196,41 @@ const Auth: React.FC = () => {
                     required
                     className="bg-background/50"
                   />
+                </div>
+              )}
+
+              {isSignUp && (
+                <div className="space-y-4">
+                  <div className="flex items-start space-x-3">
+                    <Checkbox
+                      id="gdpr-consent"
+                      checked={gdprConsent}
+                      onCheckedChange={(checked) => setGdprConsent(checked === true)}
+                      className="mt-1"
+                    />
+                    <Label htmlFor="gdpr-consent" className="text-sm leading-relaxed cursor-pointer">
+                      J'accepte les{" "}
+                      <Link to="/terms" className="text-primary hover:underline" target="_blank">
+                        conditions générales
+                      </Link>{" "}
+                      et la{" "}
+                      <Link to="/privacy" className="text-primary hover:underline" target="_blank">
+                        politique de confidentialité
+                      </Link>. <span className="text-destructive">*</span>
+                    </Label>
+                  </div>
+                  
+                  <div className="flex items-start space-x-3">
+                    <Checkbox
+                      id="newsletter-consent"
+                      checked={newsletterConsent}
+                      onCheckedChange={(checked) => setNewsletterConsent(checked === true)}
+                      className="mt-1"
+                    />
+                    <Label htmlFor="newsletter-consent" className="text-sm leading-relaxed cursor-pointer">
+                      Je souhaite recevoir la newsletter et les nouveautés de StoryKid AI.
+                    </Label>
+                  </div>
                 </div>
               )}
               
