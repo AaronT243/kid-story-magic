@@ -85,22 +85,29 @@ const Story = () => {
     
     setPdfLoading(true);
     try {
+      console.log('Calling export-pdf function with story ID:', story.id);
       const { data, error } = await supabase.functions.invoke('export-pdf', {
         body: { story_id: story.id }
       });
 
-      if (error) throw error;
+      console.log('Export PDF response:', { data, error });
 
-      if (data.success && data.download_url) {
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
+
+      if (data?.success && data?.download_url) {
         // Open PDF in new tab
         window.open(data.download_url, '_blank');
         toast.success('PDF généré avec succès !');
       } else {
+        console.error('Invalid response data:', data);
         toast.error('Erreur lors de la génération du PDF');
       }
     } catch (error: any) {
       console.error('Error exporting PDF:', error);
-      toast.error('Erreur lors de l\'export PDF: ' + error.message);
+      toast.error('Erreur lors de l\'export PDF: ' + (error.message || 'Erreur inconnue'));
     } finally {
       setPdfLoading(false);
     }
