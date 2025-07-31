@@ -86,23 +86,26 @@ const Story = () => {
     setPdfLoading(true);
     try {
       console.log('Calling export-pdf function with story ID:', story.id);
-      const response = await supabase.functions.invoke('export-pdf', {
-        body: { story_id: story.id }
+      
+      // Call the function and get raw response
+      const response = await fetch(`https://tmsktyzdbqqmhyczkngn.supabase.co/functions/v1/export-pdf`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+          'Content-Type': 'application/json',
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRtc2t0eXpkYnFxbWh5Y3prbmduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5MzA4NjcsImV4cCI6MjA2OTUwNjg2N30.Qc2szKGShcUA8fRQgPCtYRB8vFMh2UG5n25uuY8_87I'
+        },
+        body: JSON.stringify({ story_id: story.id })
       });
 
-      console.log('Export PDF response:', response);
-
-      if (response.error) {
-        console.error('Supabase function error:', response.error);
-        throw response.error;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // The response.data should be the PDF blob
-      if (response.data) {
-        // Create blob from the PDF data
-        const uint8Array = new Uint8Array(response.data);
-        const blob = new Blob([uint8Array], { type: 'application/pdf' });
-        
+      // Get the PDF as blob directly
+      const blob = await response.blob();
+      
+      if (blob.type === 'application/pdf' || blob.size > 0) {
         // Create download link
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -115,8 +118,7 @@ const Story = () => {
         
         toast.success('PDF téléchargé avec succès !');
       } else {
-        console.error('No PDF data received');
-        toast.error('Erreur lors de la génération du PDF');
+        throw new Error('PDF invalide reçu');
       }
     } catch (error: any) {
       console.error('Error exporting PDF:', error);
@@ -132,23 +134,26 @@ const Story = () => {
     setPrintLoading(true);
     try {
       console.log('Generating PDF for printing with story ID:', story.id);
-      const response = await supabase.functions.invoke('export-pdf', {
-        body: { story_id: story.id }
+      
+      // Call the function and get raw response
+      const response = await fetch(`https://tmsktyzdbqqmhyczkngn.supabase.co/functions/v1/export-pdf`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+          'Content-Type': 'application/json',
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRtc2t0eXpkYnFxbWh5Y3prbmduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5MzA4NjcsImV4cCI6MjA2OTUwNjg2N30.Qc2szKGShcUA8fRQgPCtYRB8vFMh2UG5n25uuY8_87I'
+        },
+        body: JSON.stringify({ story_id: story.id })
       });
 
-      console.log('Print PDF response:', response);
-
-      if (response.error) {
-        console.error('Supabase function error:', response.error);
-        throw response.error;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // The response.data should be the PDF blob
-      if (response.data) {
-        // Create blob from the PDF data
-        const uint8Array = new Uint8Array(response.data);
-        const blob = new Blob([uint8Array], { type: 'application/pdf' });
-        
+      // Get the PDF as blob directly
+      const blob = await response.blob();
+      
+      if (blob.type === 'application/pdf' || blob.size > 0) {
         // Create URL for the PDF
         const url = URL.createObjectURL(blob);
         
@@ -158,7 +163,7 @@ const Story = () => {
           printWindow.onload = () => {
             setTimeout(() => {
               printWindow.print();
-            }, 500); // Small delay to ensure PDF is loaded
+            }, 1000); // Longer delay to ensure PDF is fully loaded
           };
         }
         
@@ -169,8 +174,7 @@ const Story = () => {
         
         toast.success('Document prêt pour impression !');
       } else {
-        console.error('No PDF data received for printing');
-        toast.error('Erreur lors de la préparation de l\'impression');
+        throw new Error('PDF invalide reçu');
       }
     } catch (error: any) {
       console.error('Error preparing print:', error);
