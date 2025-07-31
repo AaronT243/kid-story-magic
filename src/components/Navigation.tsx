@@ -59,10 +59,16 @@ const Navigation: React.FC<NavigationProps> = ({ showBackButton, backTo = '/stor
                 <Button 
                   variant="ghost" 
                   onClick={() => {
-                    const element = document.getElementById('plans');
-                    if (element) {
-                      element.scrollIntoView({ behavior: 'smooth' });
-                    }
+                    const scrollToPlans = () => {
+                      const element = document.getElementById('plans');
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      } else {
+                        console.log('Element with ID "plans" not found');
+                      }
+                    };
+                    // Small delay to ensure DOM is ready
+                    setTimeout(scrollToPlans, 50);
                   }}
                 >
                   Tarifs
@@ -110,10 +116,16 @@ const Navigation: React.FC<NavigationProps> = ({ showBackButton, backTo = '/stor
                 <>
                   <DropdownMenuItem 
                     onClick={() => {
-                      const element = document.getElementById('plans');
-                      if (element) {
-                        element.scrollIntoView({ behavior: 'smooth' });
-                      }
+                      const scrollToPlans = () => {
+                        const element = document.getElementById('plans');
+                        if (element) {
+                          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        } else {
+                          console.log('Element with ID "plans" not found');
+                        }
+                      };
+                      // Small delay to ensure DOM is ready
+                      setTimeout(scrollToPlans, 50);
                     }}
                     className="w-full cursor-pointer"
                   >
