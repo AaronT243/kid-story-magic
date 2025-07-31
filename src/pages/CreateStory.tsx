@@ -105,11 +105,17 @@ const CreateStory = () => {
 
       if (error) throw error;
 
-      // Update story count in profile
+      // Get current story count and update it
+      const { data: currentProfile } = await supabase
+        .from('profiles')
+        .select('stories_created_this_month')
+        .eq('user_id', user.id)
+        .single();
+
       await supabase
         .from('profiles')
         .update({ 
-          stories_created_this_month: (subscriptionData?.stories_created_this_month || 0) + 1 
+          stories_created_this_month: (currentProfile?.stories_created_this_month || 0) + 1 
         })
         .eq('user_id', user.id);
 
