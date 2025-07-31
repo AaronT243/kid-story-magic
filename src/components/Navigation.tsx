@@ -6,6 +6,7 @@ import { Menu } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LanguageSelector from './LanguageSelector';
+import LanguageSelectorTest from './LanguageSelectorTest';
 
 interface NavigationProps {
   showBackButton?: boolean;
@@ -35,7 +36,7 @@ const Navigation: React.FC<NavigationProps> = ({ showBackButton, backTo = '/stor
       
       <div className="flex items-center space-x-4">
         {/* Language selector always visible */}
-        <LanguageSelector />
+        <LanguageSelectorTest />
         
         {/* Desktop navigation */}
         {!isMobile && (

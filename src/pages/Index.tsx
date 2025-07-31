@@ -27,9 +27,12 @@ import { motion } from 'framer-motion';
 
 const Index = () => {
   const { user, profile } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  
+  console.log('Index page - Current language:', language);
+  console.log('Translation test:', t('home.title'));
 
   // Handle scroll to anchor when URL contains #plans
   useEffect(() => {
