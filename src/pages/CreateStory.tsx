@@ -70,12 +70,16 @@ const CreateStory = () => {
     setIsGenerating(true);
 
     try {
-      // Check subscription status and story limits
-      const { data: subscriptionData } = await supabase.functions.invoke('check-subscription');
-      
-      if (subscriptionData && subscriptionData.max_stories_per_month !== -1) {
-        if (subscriptionData.stories_created_this_month >= subscriptionData.max_stories_per_month) {
-          toast.error(`Vous avez atteint votre limite de ${subscriptionData.max_stories_per_month} histoires par mois.`);
+      // Check subscription status and story limits directly from database
+      const { data: currentProfile } = await supabase
+        .from('profiles')
+        .select('stories_created_this_month, max_stories_per_month, subscription_plan')
+        .eq('user_id', user.id)
+        .single();
+
+      if (currentProfile && currentProfile.max_stories_per_month !== -1) {
+        if (currentProfile.stories_created_this_month >= currentProfile.max_stories_per_month) {
+          toast.error(`Vous avez atteint votre limite de ${currentProfile.max_stories_per_month} histoire(s) par mois.`);
           navigate('/stories'); // Redirect to stories page with payment plans
           return;
         }
@@ -105,13 +109,7 @@ const CreateStory = () => {
 
       if (error) throw error;
 
-      // Get current story count and update it
-      const { data: currentProfile } = await supabase
-        .from('profiles')
-        .select('stories_created_this_month')
-        .eq('user_id', user.id)
-        .single();
-
+      // Update story count using the already fetched profile data
       await supabase
         .from('profiles')
         .update({ 
