@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { BookOpen, ArrowLeft, Calendar, User, Palette, Loader2 } from 'lucide-react';
+import { BookOpen, ArrowLeft, Calendar, User, Palette, Loader2, Download, Printer } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Story {
@@ -28,6 +28,8 @@ const Story = () => {
   const navigate = useNavigate();
   const [story, setStory] = useState<Story | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [printLoading, setPrintLoading] = useState(false);
 
   useEffect(() => {
     if (user && id) {
@@ -76,6 +78,61 @@ const Story = () => {
       'long': 'Longue'
     };
     return lengths[length] || length;
+  };
+
+  const handleExportPDF = async () => {
+    if (!story?.id) return;
+    
+    setPdfLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('export-pdf', {
+        body: { story_id: story.id }
+      });
+
+      if (error) throw error;
+
+      if (data.success && data.download_url) {
+        // Open PDF in new tab
+        window.open(data.download_url, '_blank');
+        toast.success('PDF généré avec succès !');
+      } else {
+        toast.error('Erreur lors de la génération du PDF');
+      }
+    } catch (error: any) {
+      console.error('Error exporting PDF:', error);
+      toast.error('Erreur lors de l\'export PDF: ' + error.message);
+    } finally {
+      setPdfLoading(false);
+    }
+  };
+
+  const handlePrintOrder = async (productType: 'hardcover_book' | 'softcover_book' = 'hardcover_book') => {
+    if (!story?.id) return;
+    
+    setPrintLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('create-print-order', {
+        body: { 
+          story_id: story.id,
+          product_type: productType
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.success && data.checkout_url) {
+        // Open Stripe checkout in new tab
+        window.open(data.checkout_url, '_blank');
+        toast.success('Redirection vers le paiement...');
+      } else {
+        toast.error('Erreur lors de la création de la commande');
+      }
+    } catch (error: any) {
+      console.error('Error creating print order:', error);
+      toast.error('Erreur lors de la commande d\'impression: ' + error.message);
+    } finally {
+      setPrintLoading(false);
+    }
   };
 
   if (!user) {
@@ -187,7 +244,37 @@ const Story = () => {
           {story.status === 'completed' && story.content ? (
             <Card className="bg-background/50 backdrop-blur-sm border-border/50">
               <CardHeader>
-                <CardTitle>Histoire</CardTitle>
+                <div className="flex justify-between items-start">
+                  <CardTitle>Histoire</CardTitle>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleExportPDF}
+                      disabled={pdfLoading}
+                    >
+                      {pdfLoading ? (
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      ) : (
+                        <Download className="h-4 w-4 mr-2" />
+                      )}
+                      Télécharger PDF
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handlePrintOrder('hardcover_book')}
+                      disabled={printLoading}
+                    >
+                      {printLoading ? (
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      ) : (
+                        <Printer className="h-4 w-4 mr-2" />
+                      )}
+                      Imprimer
+                    </Button>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="prose prose-lg max-w-none">

@@ -14,6 +14,59 @@ export type Database = {
   }
   public: {
     Tables: {
+      print_orders: {
+        Row: {
+          amount: number | null
+          created_at: string
+          currency: string | null
+          customer_email: string | null
+          gelato_order_id: string | null
+          id: string
+          product_type: string
+          status: string
+          story_id: string
+          stripe_session_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string
+          currency?: string | null
+          customer_email?: string | null
+          gelato_order_id?: string | null
+          id?: string
+          product_type: string
+          status?: string
+          story_id: string
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string
+          currency?: string | null
+          customer_email?: string | null
+          gelato_order_id?: string | null
+          id?: string
+          product_type?: string
+          status?: string
+          story_id?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "print_orders_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "stories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
