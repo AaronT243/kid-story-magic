@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
-import { BookOpen, ArrowLeft, Plus, Calendar, User, Palette, Loader2, Eye } from 'lucide-react';
+import { BookOpen, ArrowLeft, Plus, Calendar, User, Palette, Loader2, Eye, Crown, Settings, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Story {
@@ -22,16 +22,26 @@ interface Story {
   content?: string;
 }
 
+interface SubscriptionInfo {
+  subscription_active: boolean;
+  subscription_plan: string;
+  stories_created_this_month: number;
+  max_stories_per_month: number;
+}
+
 const Stories = () => {
   const { user } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [stories, setStories] = useState<Story[]>([]);
   const [loading, setLoading] = useState(true);
+  const [subscriptionInfo, setSubscriptionInfo] = useState<SubscriptionInfo | null>(null);
+  const [checkingSubscription, setCheckingSubscription] = useState(false);
 
   useEffect(() => {
     if (user) {
       fetchStories();
+      checkSubscription();
     }
   }, [user]);
 
@@ -50,6 +60,52 @@ const Stories = () => {
       toast.error('Erreur lors du chargement des histoires');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const checkSubscription = async () => {
+    if (!user) return;
+    
+    setCheckingSubscription(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('check-subscription');
+      if (error) throw error;
+      setSubscriptionInfo(data);
+    } catch (error: any) {
+      console.error('Error checking subscription:', error);
+      toast.error('Erreur lors de la vérification de l\'abonnement');
+    } finally {
+      setCheckingSubscription(false);
+    }
+  };
+
+  const handleCheckout = async (plan: 'starter' | 'premium') => {
+    try {
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: { plan }
+      });
+      
+      if (error) throw error;
+      
+      // Open Stripe checkout in new tab
+      window.open(data.url, '_blank');
+    } catch (error: any) {
+      console.error('Error creating checkout:', error);
+      toast.error('Erreur lors de la création du paiement');
+    }
+  };
+
+  const handleCustomerPortal = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('customer-portal');
+      
+      if (error) throw error;
+      
+      // Open customer portal in new tab
+      window.open(data.url, '_blank');
+    } catch (error: any) {
+      console.error('Error opening customer portal:', error);
+      toast.error('Erreur lors de l\'ouverture du portail client');
     }
   };
 
@@ -134,16 +190,160 @@ const Stories = () => {
         </div>
       </nav>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Mes histoires
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Retrouvez toutes vos histoires personnalisées
-          </p>
-        </div>
+        {/* Main Content */}
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              Mes histoires
+            </h1>
+            <p className="text-muted-foreground text-lg">
+              Retrouvez toutes vos histoires personnalisées
+            </p>
+          </div>
+
+          {/* Subscription Status */}
+          {subscriptionInfo && (
+            <div className="max-w-4xl mx-auto mb-8">
+              <Card className="bg-background/50 backdrop-blur-sm border-border/50">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="flex items-center gap-2">
+                      <Crown className="h-5 w-5 text-primary" />
+                      Mon abonnement
+                    </CardTitle>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={checkSubscription}
+                      disabled={checkingSubscription}
+                    >
+                      {checkingSubscription ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <RefreshCw className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Free Plan */}
+                    <Card className={`relative ${subscriptionInfo.subscription_plan === 'free' ? 'ring-2 ring-primary' : ''}`}>
+                      <CardHeader>
+                        <CardTitle className="text-lg">Plan Gratuit</CardTitle>
+                        <CardDescription>1 histoire par mois</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-2xl font-bold mb-2">0€</div>
+                        <div className="text-sm text-muted-foreground mb-4">par mois</div>
+                        {subscriptionInfo.subscription_plan === 'free' && (
+                          <Badge className="mb-4">Plan actuel</Badge>
+                        )}
+                        <div className="space-y-2 text-sm">
+                          <div>✓ 1 histoire personnalisée</div>
+                          <div>✓ Illustrations incluses</div>
+                          <div>✓ Thèmes variés</div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Starter Plan */}
+                    <Card className={`relative ${subscriptionInfo.subscription_plan === 'starter' ? 'ring-2 ring-primary' : ''}`}>
+                      <CardHeader>
+                        <CardTitle className="text-lg">Plan Starter</CardTitle>
+                        <CardDescription>3 histoires par mois</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-2xl font-bold mb-2">9€</div>
+                        <div className="text-sm text-muted-foreground mb-4">par mois</div>
+                        {subscriptionInfo.subscription_plan === 'starter' && subscriptionInfo.subscription_active ? (
+                          <div className="space-y-2 mb-4">
+                            <Badge className="mb-2">Plan actuel</Badge>
+                            <Button variant="outline" size="sm" onClick={handleCustomerPortal}>
+                              <Settings className="h-4 w-4 mr-2" />
+                              Gérer mon abonnement
+                            </Button>
+                          </div>
+                        ) : (
+                          <Button 
+                            className="w-full mb-4" 
+                            onClick={() => handleCheckout('starter')}
+                          >
+                            Choisir ce plan
+                          </Button>
+                        )}
+                        <div className="space-y-2 text-sm">
+                          <div>✓ 3 histoires personnalisées</div>
+                          <div>✓ Illustrations incluses</div>
+                          <div>✓ Tous les thèmes</div>
+                          <div>✓ Support prioritaire</div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Premium Plan */}
+                    <Card className={`relative ${subscriptionInfo.subscription_plan === 'premium' ? 'ring-2 ring-primary' : ''}`}>
+                      <CardHeader>
+                        <CardTitle className="text-lg">Plan Premium</CardTitle>
+                        <CardDescription>Histoires illimitées</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-2xl font-bold mb-2">19€</div>
+                        <div className="text-sm text-muted-foreground mb-4">par mois</div>
+                        {subscriptionInfo.subscription_plan === 'premium' && subscriptionInfo.subscription_active ? (
+                          <div className="space-y-2 mb-4">
+                            <Badge className="mb-2">Plan actuel</Badge>
+                            <Button variant="outline" size="sm" onClick={handleCustomerPortal}>
+                              <Settings className="h-4 w-4 mr-2" />
+                              Gérer mon abonnement
+                            </Button>
+                          </div>
+                        ) : (
+                          <Button 
+                            className="w-full mb-4" 
+                            onClick={() => handleCheckout('premium')}
+                          >
+                            Choisir ce plan
+                          </Button>
+                        )}
+                        <div className="space-y-2 text-sm">
+                          <div>✓ Histoires illimitées</div>
+                          <div>✓ Illustrations premium</div>
+                          <div>✓ Tous les thèmes</div>
+                          <div>✓ Support prioritaire</div>
+                          <div>✓ Nouvelles fonctionnalités en avant-première</div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Usage Stats */}
+                  <div className="mt-6 p-4 bg-muted/50 rounded-lg">
+                    <h4 className="font-medium mb-2">Utilisation ce mois-ci</h4>
+                    <div className="flex items-center gap-4">
+                      <div className="text-sm">
+                        <span className="font-medium">{subscriptionInfo.stories_created_this_month}</span>
+                        {subscriptionInfo.max_stories_per_month === -1 
+                          ? ' histoires créées (illimité)' 
+                          : ` / ${subscriptionInfo.max_stories_per_month} histoires utilisées`
+                        }
+                      </div>
+                      {subscriptionInfo.max_stories_per_month !== -1 && (
+                        <div className="flex-1 bg-background rounded-full h-2">
+                          <div 
+                            className="bg-primary h-2 rounded-full transition-all" 
+                            style={{ 
+                              width: `${Math.min((subscriptionInfo.stories_created_this_month / subscriptionInfo.max_stories_per_month) * 100, 100)}%` 
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
 
         {loading ? (
           <div className="flex justify-center items-center py-12">

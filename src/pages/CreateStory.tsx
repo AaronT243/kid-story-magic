@@ -70,6 +70,17 @@ const CreateStory = () => {
     setIsGenerating(true);
 
     try {
+      // Check subscription status and story limits
+      const { data: subscriptionData } = await supabase.functions.invoke('check-subscription');
+      
+      if (subscriptionData && subscriptionData.max_stories_per_month !== -1) {
+        if (subscriptionData.stories_created_this_month >= subscriptionData.max_stories_per_month) {
+          toast.error(`Vous avez atteint votre limite de ${subscriptionData.max_stories_per_month} histoire(s) par mois. Passez à un plan supérieur pour créer plus d'histoires.`);
+          navigate('/stories');
+          return;
+        }
+      }
+
       // Combine predefined and custom characters
       const allCharacters = [...formData.characters];
       if (formData.customCharacters) {
@@ -93,6 +104,14 @@ const CreateStory = () => {
         .single();
 
       if (error) throw error;
+
+      // Update story count in profile
+      await supabase
+        .from('profiles')
+        .update({ 
+          stories_created_this_month: (subscriptionData?.stories_created_this_month || 0) + 1 
+        })
+        .eq('user_id', user.id);
 
       // Generate story content using edge function
       const { data: generatedStory, error: generateError } = await supabase.functions.invoke('generate-story', {
