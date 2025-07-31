@@ -169,12 +169,16 @@ interface LanguageProviderProps {
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const [language, setLanguageState] = useState<SupportedLanguage>(() => {
     const saved = localStorage.getItem('language') as SupportedLanguage;
-    return saved && ['fr', 'en', 'es', 'pt'].includes(saved) ? saved : 'fr';
+    const initialLang = saved && ['fr', 'en', 'es', 'pt'].includes(saved) ? saved : 'fr';
+    console.log('LanguageContext: Initial language from localStorage:', saved, 'Using:', initialLang);
+    return initialLang;
   });
 
   const setLanguage = (lang: SupportedLanguage) => {
+    console.log('LanguageContext: Setting language from', language, 'to', lang);
     localStorage.setItem('language', lang);
     setLanguageState(lang);
+    console.log('LanguageContext: Language set, new state should be', lang);
   };
 
   const t = (key: string): string => {
@@ -183,6 +187,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
   useEffect(() => {
     // Update document language
+    console.log('LanguageContext: useEffect triggered, setting document lang to:', language);
     document.documentElement.lang = language;
   }, [language]);
 

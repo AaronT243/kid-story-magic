@@ -1,6 +1,7 @@
 import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useLanguage } from '@/contexts/LanguageContext';
+type SupportedLanguage = 'fr' | 'en' | 'es' | 'pt';
 import { Globe } from 'lucide-react';
 
 const LanguageSelector: React.FC = () => {
@@ -19,8 +20,8 @@ const LanguageSelector: React.FC = () => {
 
   return (
     <Select value={language} onValueChange={(value) => {
-      console.log('Language changing from', language, 'to', value);
-      setLanguage(value as any);
+      console.log('LanguageSelector: Language changing from', language, 'to', value);
+      setLanguage(value as SupportedLanguage);
     }}>
       <SelectTrigger className="w-auto min-w-[120px] bg-background/80 backdrop-blur-sm border-border/50">
         <div className="flex items-center gap-2">
@@ -32,12 +33,11 @@ const LanguageSelector: React.FC = () => {
           </SelectValue>
         </div>
       </SelectTrigger>
-      <SelectContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 z-50 min-w-[160px] shadow-lg">
+      <SelectContent className="bg-background/95 backdrop-blur-sm border-border/50 z-50">
         {languages.map((lang) => (
           <SelectItem 
             key={lang.code} 
             value={lang.code}
-            className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100"
           >
             <span className="flex items-center gap-2">
               {lang.flag} {lang.name}
