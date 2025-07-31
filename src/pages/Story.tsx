@@ -86,23 +86,36 @@ const Story = () => {
     setPdfLoading(true);
     try {
       console.log('Calling export-pdf function with story ID:', story.id);
-      const { data, error } = await supabase.functions.invoke('export-pdf', {
+      const response = await supabase.functions.invoke('export-pdf', {
         body: { story_id: story.id }
       });
 
-      console.log('Export PDF response:', { data, error });
+      console.log('Export PDF response:', response);
 
-      if (error) {
-        console.error('Supabase function error:', error);
-        throw error;
+      if (response.error) {
+        console.error('Supabase function error:', response.error);
+        throw response.error;
       }
 
-      if (data?.success && data?.download_url) {
-        // Open PDF in new tab
-        window.open(data.download_url, '_blank');
-        toast.success('PDF généré avec succès !');
+      // The response.data should be the PDF blob
+      if (response.data) {
+        // Create blob from the PDF data
+        const uint8Array = new Uint8Array(response.data);
+        const blob = new Blob([uint8Array], { type: 'application/pdf' });
+        
+        // Create download link
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${story.title.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        toast.success('PDF téléchargé avec succès !');
       } else {
-        console.error('Invalid response data:', data);
+        console.error('No PDF data received');
         toast.error('Erreur lors de la génération du PDF');
       }
     } catch (error: any) {
