@@ -16,7 +16,10 @@ const LanguageSelector: React.FC = () => {
   const currentLang = languages.find(lang => lang.code === language);
 
   return (
-    <Select value={language} onValueChange={(value) => setLanguage(value as any)}>
+    <Select value={language} onValueChange={(value) => {
+      console.log('Language changing from', language, 'to', value);
+      setLanguage(value as any);
+    }}>
       <SelectTrigger className="w-auto min-w-[120px] bg-background/80 backdrop-blur-sm border-border/50">
         <div className="flex items-center gap-2">
           <Globe className="h-4 w-4" />
@@ -27,9 +30,13 @@ const LanguageSelector: React.FC = () => {
           </SelectValue>
         </div>
       </SelectTrigger>
-      <SelectContent className="bg-background/95 backdrop-blur-sm border-border/50">
+      <SelectContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 z-50 min-w-[160px] shadow-lg">
         {languages.map((lang) => (
-          <SelectItem key={lang.code} value={lang.code}>
+          <SelectItem 
+            key={lang.code} 
+            value={lang.code}
+            className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100"
+          >
             <span className="flex items-center gap-2">
               {lang.flag} {lang.name}
             </span>
