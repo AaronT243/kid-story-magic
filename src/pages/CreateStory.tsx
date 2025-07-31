@@ -75,8 +75,8 @@ const CreateStory = () => {
       
       if (subscriptionData && subscriptionData.max_stories_per_month !== -1) {
         if (subscriptionData.stories_created_this_month >= subscriptionData.max_stories_per_month) {
-          toast.error(`Vous avez atteint votre limite de ${subscriptionData.max_stories_per_month} histoire(s) par mois. Passez à un plan supérieur pour créer plus d'histoires.`);
-          navigate('/stories');
+          toast.error(`Vous avez atteint votre limite de ${subscriptionData.max_stories_per_month} histoires par mois.`);
+          navigate('/stories'); // Redirect to stories page with payment plans
           return;
         }
       }
