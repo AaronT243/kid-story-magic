@@ -68,7 +68,7 @@ serve(async (req) => {
           subscription_active: false, 
           subscription_plan: 'free',
           stories_created_this_month: 0,
-          max_stories_per_month: 2
+          max_stories_per_month: 1
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
@@ -86,7 +86,7 @@ serve(async (req) => {
 
     let subscriptionPlan = 'free';
     let subscriptionActive = false;
-    let maxStoriesPerMonth = 2;
+    let maxStoriesPerMonth = 1;
 
     if (subscriptions.data.length > 0) {
       const subscription = subscriptions.data[0];
