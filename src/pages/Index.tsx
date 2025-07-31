@@ -80,23 +80,10 @@ const Index = () => {
         throw new Error('URL de checkout manquante');
       }
 
-      // Ouvrir Stripe checkout dans une popup
-      const popup = window.open(
-        data.url, 
-        'stripe-checkout',
-        'width=600,height=700,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,directories=no,status=no'
-      );
-      
+      // Ouvrir Stripe checkout dans un nouvel onglet
+      window.open(data.url, '_blank');
       toast.dismiss();
-      toast.success('Ouverture du paiement en popup...');
-
-      // Surveiller la fermeture de la popup
-      const checkClosed = setInterval(() => {
-        if (popup?.closed) {
-          clearInterval(checkClosed);
-          toast.info('Fenêtre de paiement fermée. Vérifiez votre abonnement dans votre profil.');
-        }
-      }, 1000);
+      toast.success('Redirection vers le paiement...');
     } catch (error: any) {
       console.error('Error creating checkout session:', error);
       toast.dismiss();
