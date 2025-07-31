@@ -14,7 +14,7 @@ import { BookOpen, ArrowLeft, Sparkles, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 const CreateStory = () => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
 
@@ -184,7 +184,7 @@ const CreateStory = () => {
               Créer une nouvelle histoire
             </h1>
             <p className="text-muted-foreground text-lg">
-              Personnalisez votre histoire pour {user.email}
+              Personnalisez votre histoire pour {profile?.first_name || 'votre enfant'}
             </p>
           </div>
 

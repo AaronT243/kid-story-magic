@@ -8,7 +8,7 @@ import LanguageSelector from '@/components/LanguageSelector';
 import { BookOpen, Sparkles, Download, Printer } from 'lucide-react';
 
 const Index = () => {
-  const { user, signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const { t } = useLanguage();
 
   return (
@@ -28,7 +28,7 @@ const Index = () => {
                 <Link to="/stories">Mes histoires</Link>
               </Button>
               <span className="text-sm text-muted-foreground">
-                Bonjour, {user.email}
+                Bonjour, {profile?.first_name || user.email}
               </span>
               <Button variant="outline" onClick={signOut}>
                 {t('nav.signout')}
