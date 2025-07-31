@@ -81,10 +81,19 @@ const Index = () => {
         throw new Error('URL de checkout manquante');
       }
 
-      // Ouvrir Stripe checkout dans un nouvel onglet
-      window.open(data.url, '_blank');
+      console.log('Opening checkout URL:', data.url);
+      
+      // Try to open in new tab, fallback to current window if blocked (mobile)
+      const newWindow = window.open(data.url, '_blank', 'width=800,height=600');
+      
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        // Popup was blocked (common on mobile), open in current window
+        console.log('Popup blocked, redirecting in current window');
+        window.location.href = data.url;
+      } else {
+        toast.success('Redirection vers Stripe...');
+      }
       toast.dismiss();
-      toast.success('Redirection vers le paiement...');
     } catch (error: any) {
       console.error('Error creating checkout session:', error);
       toast.dismiss();
