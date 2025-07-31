@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -30,6 +30,19 @@ const Index = () => {
   const { t } = useLanguage();
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+
+  // Handle scroll to anchor when URL contains #plans
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash === '#plans') {
+      const element = document.getElementById('plans');
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, []);
 
   const testimonials = [
     {

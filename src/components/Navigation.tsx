@@ -56,8 +56,16 @@ const Navigation: React.FC<NavigationProps> = ({ showBackButton, backTo = '/stor
               </>
             ) : (
               <>
-                <Button variant="ghost" asChild>
-                  <Link to="/#plans">Tarifs</Link>
+                <Button 
+                  variant="ghost" 
+                  onClick={() => {
+                    const element = document.getElementById('plans');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  Tarifs
                 </Button>
                 <Button variant="ghost" asChild>
                   <Link to="/auth">Se connecter</Link>
@@ -100,10 +108,16 @@ const Navigation: React.FC<NavigationProps> = ({ showBackButton, backTo = '/stor
                 </>
               ) : (
                 <>
-                  <DropdownMenuItem asChild>
-                    <Link to="/#plans" className="w-full">
-                      Tarifs
-                    </Link>
+                  <DropdownMenuItem 
+                    onClick={() => {
+                      const element = document.getElementById('plans');
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                    className="w-full cursor-pointer"
+                  >
+                    Tarifs
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/auth" className="w-full">
