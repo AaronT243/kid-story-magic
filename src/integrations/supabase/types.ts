@@ -14,7 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+          max_stories_per_month: number | null
+          preferred_language: Database["public"]["Enums"]["supported_language"]
+          stories_created_this_month: number | null
+          stripe_customer_id: string | null
+          subscription_active: boolean | null
+          subscription_plan:
+            | Database["public"]["Enums"]["subscription_plan"]
+            | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          max_stories_per_month?: number | null
+          preferred_language?: Database["public"]["Enums"]["supported_language"]
+          stories_created_this_month?: number | null
+          stripe_customer_id?: string | null
+          subscription_active?: boolean | null
+          subscription_plan?:
+            | Database["public"]["Enums"]["subscription_plan"]
+            | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          max_stories_per_month?: number | null
+          preferred_language?: Database["public"]["Enums"]["supported_language"]
+          stories_created_this_month?: number | null
+          stripe_customer_id?: string | null
+          subscription_active?: boolean | null
+          subscription_plan?:
+            | Database["public"]["Enums"]["subscription_plan"]
+            | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +73,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      subscription_plan: "starter" | "premium"
+      supported_language: "fr" | "en" | "es" | "pt"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +201,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      subscription_plan: ["starter", "premium"],
+      supported_language: ["fr", "en", "es", "pt"],
+    },
   },
 } as const
