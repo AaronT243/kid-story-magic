@@ -81,17 +81,33 @@ const Stories = () => {
 
   const handleCheckout = async (plan: 'starter' | 'premium') => {
     try {
+      toast.loading('Création de la session de paiement...');
+      
       const { data, error } = await supabase.functions.invoke('create-checkout', {
         body: { plan }
       });
       
       if (error) throw error;
       
-      // Open Stripe checkout in new tab
-      window.open(data.url, '_blank');
+      if (!data?.url) {
+        throw new Error('URL de checkout manquante');
+      }
+
+      console.log('Opening checkout URL:', data.url);
+      
+      // Try to open in new tab, fallback to current window if blocked
+      const newWindow = window.open(data.url, '_blank', 'width=800,height=600');
+      
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        // Popup was blocked, open in current window
+        console.log('Popup blocked, redirecting in current window');
+        window.location.href = data.url;
+      } else {
+        toast.success('Redirection vers Stripe...');
+      }
     } catch (error: any) {
       console.error('Error creating checkout:', error);
-      toast.error('Erreur lors de la création du paiement');
+      toast.error(`Erreur lors de la création du paiement: ${error.message}`);
     }
   };
 
