@@ -139,70 +139,102 @@ serve(async (req) => {
     yPosition -= 20; // Extra space before content
     
     // Story content with pagination - handle line breaks properly
-    const paragraphs = templateData.story_content.split(/\n\n|\n/);
-    
-    for (const paragraph of paragraphs) {
-      if (paragraph.trim() === '') {
-        yPosition -= lineHeight; // Empty line
-        continue;
-      }
+    if (templateData.story_content && templateData.story_content.trim()) {
+      const paragraphs = templateData.story_content.split(/\n\n+/);
       
-      const words = paragraph.split(' ');
-      let currentLine = '';
-      const maxWidth = width - (margin * 2);
-      
-      for (const word of words) {
-        const testLine = currentLine + word + ' ';
-        const textWidth = helveticaFont.widthOfTextAtSize(testLine, 12);
+      for (const paragraph of paragraphs) {
+        const cleanParagraph = paragraph.trim();
+        if (cleanParagraph === '') {
+          yPosition -= lineHeight; // Empty line
+          continue;
+        }
         
-        if (textWidth > maxWidth && currentLine !== '') {
-          // Draw current line
-          page.drawText(currentLine.trim(), {
+        const words = cleanParagraph.split(/\s+/);
+        let currentLine = '';
+        const maxWidth = width - (margin * 2);
+        
+        for (const word of words) {
+          const testLine = currentLine ? currentLine + ' ' + word : word;
+          const textWidth = helveticaFont.widthOfTextAtSize(testLine, 12);
+          
+          if (textWidth > maxWidth && currentLine !== '') {
+            // Draw current line
+            page.drawText(currentLine, {
+              x: margin,
+              y: yPosition,
+              size: 12,
+              font: helveticaFont,
+              color: rgb(0, 0, 0),
+            });
+            
+            yPosition -= lineHeight;
+            currentLine = word;
+            
+            // Check if we need a new page
+            if (yPosition < margin + lineHeight * 3) {
+              page = pdfDoc.addPage([595, 842]);
+              yPosition = height - margin;
+            }
+          } else {
+            currentLine = testLine;
+          }
+        }
+        
+        // Draw remaining text in the paragraph
+        if (currentLine) {
+          page.drawText(currentLine, {
             x: margin,
             y: yPosition,
             size: 12,
             font: helveticaFont,
             color: rgb(0, 0, 0),
           });
-          
           yPosition -= lineHeight;
-          currentLine = word + ' ';
-          
-          // Check if we need a new page
-          if (yPosition < margin + lineHeight) {
-            page = pdfDoc.addPage([595, 842]);
-            yPosition = height - margin;
-          }
-        } else {
-          currentLine = testLine;
+        }
+        
+        // Add extra space between paragraphs
+        yPosition -= lineHeight * 0.5;
+        
+        // Check if we need a new page
+        if (yPosition < margin + lineHeight * 3) {
+          page = pdfDoc.addPage([595, 842]);
+          yPosition = height - margin;
         }
       }
-      
-      // Draw remaining text in the paragraph
-      if (currentLine.trim()) {
-        page.drawText(currentLine.trim(), {
-          x: margin,
-          y: yPosition,
-          size: 12,
-          font: helveticaFont,
-          color: rgb(0, 0, 0),
-        });
-        yPosition -= lineHeight;
-      }
-      
-      // Add extra space between paragraphs
-      yPosition -= lineHeight * 0.5;
-      
-      // Check if we need a new page
-      if (yPosition < margin + lineHeight) {
-        page = pdfDoc.addPage([595, 842]);
-        yPosition = height - margin;
-      }
+    } else {
+      // If no content, add a message
+      page.drawText("Contenu de l'histoire en cours de chargement...", {
+        x: margin,
+        y: yPosition,
+        size: 12,
+        font: helveticaFont,
+        color: rgb(0.7, 0.7, 0.7),
+      });
     }
     
     
-    // Add footer
+    // Add footer with custom message
     const lastPage = pdfDoc.getPages()[pdfDoc.getPageCount() - 1];
+    
+    // Add thank you message
+    lastPage.drawText("Merci d'avoir lu cette histoire !", {
+      x: margin,
+      y: 70,
+      size: 12,
+      font: helveticaBoldFont,
+      color: rgb(0.2, 0.2, 0.2),
+    });
+    
+    // Add created with love message
+    lastPage.drawText("Créé avec ❤ par StoryKidAI", {
+      x: margin,
+      y: 50,
+      size: 10,
+      font: helveticaFont,
+      color: rgb(0.4, 0.4, 0.4),
+    });
+    
+    // Add creation date
     lastPage.drawText(`Créé le ${templateData.created_date}`, {
       x: margin,
       y: 30,
