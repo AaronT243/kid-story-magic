@@ -17,17 +17,17 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    /* Magical color palette */
-    --primary: 255 65% 54%; /* violet royal #5c36dc */
+    /* Magical color palette - converted correctly from hex */
+    --primary: 248 65% 54%; /* violet royal #5c36dc */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 320 75% 72%; /* rose fuchsia #c81eab */
+    --secondary: 315 80% 45%; /* rose fuchsia #c81eab */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 320 40% 96%;
+    --muted: 315 40% 96%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 347 77% 55%; /* rose framboise #E3337B */
+    --accent: 346 77% 54%; /* rose framboise #E3337B */
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
@@ -35,12 +35,12 @@ All colors MUST be HSL.
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 255 65% 54%;
+    --ring: 248 65% 54%;
 
     --radius: 0.75rem;
     
     /* Magical gradients and additional colors */
-    --magical-peach: 20 45% 75%; /* rose pêche pastel #e2ae9e */
+    --magical-peach: 20 35% 75%; /* rose pêche pastel #e2ae9e */
     --gradient-magical: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
     --gradient-soft: linear-gradient(180deg, hsl(var(--background)), hsl(var(--magical-peach) / 0.1));
     --shadow-magical: 0 10px 30px -10px hsl(var(--primary) / 0.3);
@@ -73,16 +73,16 @@ All colors MUST be HSL.
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 255 65% 54%;
+    --primary: 248 65% 54%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 320 75% 72%;
+    --secondary: 315 80% 45%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 347 77% 55%;
+    --accent: 346 77% 54%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
@@ -90,9 +90,9 @@ All colors MUST be HSL.
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 255 65% 54%;
+    --ring: 248 65% 54%;
     
-    --magical-peach: 20 45% 75%;
+    --magical-peach: 20 35% 75%;
     --gradient-magical: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
     --gradient-soft: linear-gradient(180deg, hsl(var(--background)), hsl(var(--magical-peach) / 0.1));
     --shadow-magical: 0 10px 30px -10px hsl(var(--primary) / 0.3);
