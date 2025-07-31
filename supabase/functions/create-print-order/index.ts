@@ -42,14 +42,22 @@ serve(async (req) => {
     logStep("Request received", { story_id, product_type });
 
     // Fetch story from database
+    logStep("Attempting to fetch story", { story_id, user_id: user.id });
     const { data: story, error: storyError } = await supabaseClient
       .from('stories')
       .select('*')
       .eq('id', story_id)
       .eq('user_id', user.id)
-      .single();
+      .maybeSingle();
 
-    if (storyError || !story) {
+    logStep("Story query result", { story: story ? { id: story.id, title: story.title, status: story.status } : null, error: storyError });
+
+    if (storyError) {
+      logStep("Database error", storyError);
+      throw new Error(`Database error: ${storyError.message}`);
+    }
+    
+    if (!story) {
       throw new Error("Story not found or access denied");
     }
     logStep("Story fetched", { title: story.title });
