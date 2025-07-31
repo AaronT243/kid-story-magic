@@ -6,8 +6,6 @@ import { Globe } from 'lucide-react';
 
 const LanguageSelector: React.FC = () => {
   const { language, setLanguage } = useLanguage();
-  
-  console.log('Current language:', language);
 
   const languages = [
     { code: 'fr', name: 'Français', flag: '🇫🇷' },

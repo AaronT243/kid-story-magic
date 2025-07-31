@@ -167,18 +167,22 @@ interface LanguageProviderProps {
 }
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  const [language, setLanguageState] = useState<SupportedLanguage>(() => {
+  const [language, setLanguageState] = useState<SupportedLanguage>('fr');
+
+  // Load language from localStorage on mount
+  useEffect(() => {
     const saved = localStorage.getItem('language') as SupportedLanguage;
-    const initialLang = saved && ['fr', 'en', 'es', 'pt'].includes(saved) ? saved : 'fr';
-    console.log('LanguageContext: Initial language from localStorage:', saved, 'Using:', initialLang);
-    return initialLang;
-  });
+    if (saved && ['fr', 'en', 'es', 'pt'].includes(saved)) {
+      setLanguageState(saved);
+    }
+  }, []);
 
   const setLanguage = (lang: SupportedLanguage) => {
     console.log('LanguageContext: Setting language from', language, 'to', lang);
-    localStorage.setItem('language', lang);
     setLanguageState(lang);
-    console.log('LanguageContext: Language set, new state should be', lang);
+    localStorage.setItem('language', lang);
+    // Force document language update
+    document.documentElement.lang = lang;
   };
 
   const t = (key: string): string => {
@@ -186,8 +190,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   };
 
   useEffect(() => {
-    // Update document language
-    console.log('LanguageContext: useEffect triggered, setting document lang to:', language);
+    // Update document language when language changes
     document.documentElement.lang = language;
   }, [language]);
 

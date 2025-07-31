@@ -27,12 +27,9 @@ import { motion } from 'framer-motion';
 
 const Index = () => {
   const { user, profile } = useAuth();
-  const { t, language, setLanguage } = useLanguage();
+  const { t, language } = useLanguage();
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  
-  console.log('Index page - Current language:', language);
-  console.log('Translation test:', t('home.title'));
 
   // Handle scroll to anchor when URL contains #plans
   useEffect(() => {
@@ -131,39 +128,6 @@ const Index = () => {
         </div>
         
         <div className="container mx-auto px-4 py-20 text-center relative">
-          {/* Debug info */}
-          <div className="mb-4 p-3 bg-yellow-100 border border-yellow-300 text-black text-sm rounded max-w-2xl mx-auto">
-            <strong>🐛 Debug Langue:</strong><br/>
-            Langue actuelle: <strong>{language}</strong><br/>
-            Traduction 'home.title': "<strong>{t('home.title')}</strong>"<br/>
-            <div className="mt-2 flex gap-2 justify-center">
-              <button 
-                onClick={() => setLanguage('fr')} 
-                className="px-2 py-1 bg-blue-500 text-white rounded text-xs"
-              >
-                FR
-              </button>
-              <button 
-                onClick={() => setLanguage('en')} 
-                className="px-2 py-1 bg-blue-500 text-white rounded text-xs"
-              >
-                EN
-              </button>
-              <button 
-                onClick={() => setLanguage('es')} 
-                className="px-2 py-1 bg-blue-500 text-white rounded text-xs"
-              >
-                ES
-              </button>
-              <button 
-                onClick={() => setLanguage('pt')} 
-                className="px-2 py-1 bg-blue-500 text-white rounded text-xs"
-              >
-                PT
-              </button>
-            </div>
-          </div>
-          
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
