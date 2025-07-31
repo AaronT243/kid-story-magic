@@ -167,38 +167,35 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
               <motion.div 
                 whileHover={{ scale: 1.05 }}
-                className="relative rounded-3xl overflow-hidden shadow-lg"
+                className="relative"
               >
                 <img 
                   src="/lovable-uploads/94d8d03a-f93f-4e53-ae6c-aa735e6c8e80.png" 
                   alt="Famille lisant ensemble" 
-                  className="w-full h-64 object-contain bg-gradient-to-br from-primary/5 to-secondary/5"
+                  className="w-full h-64 object-contain"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
               </motion.div>
               
               <motion.div 
                 whileHover={{ scale: 1.05 }}
-                className="relative rounded-3xl overflow-hidden shadow-lg"
+                className="relative"
               >
                 <img 
                   src="/lovable-uploads/34c72a1e-2b83-4459-9a12-642ca8703a28.png" 
                   alt="Livre magique avec illustrations" 
-                  className="w-full h-64 object-contain bg-gradient-to-br from-secondary/5 to-accent/5"
+                  className="w-full h-64 object-contain"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-secondary/20 to-transparent"></div>
               </motion.div>
               
               <motion.div 
                 whileHover={{ scale: 1.05 }}
-                className="relative rounded-3xl overflow-hidden shadow-lg"
+                className="relative"
               >
                 <img 
                   src="/lovable-uploads/5abad710-211f-4e3f-be46-bbaee88ab3c7.png" 
                   alt="Enfant lisant avec des étoiles magiques" 
-                  className="w-full h-64 object-contain bg-gradient-to-br from-accent/5 to-primary/5"
+                  className="w-full h-64 object-contain"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-accent/20 to-transparent"></div>
               </motion.div>
             </div>
           </motion.div>
@@ -260,12 +257,12 @@ const Index = () => {
                   </div>
                   <motion.div
                     whileHover={{ scale: 1.05 }}
-                    className="relative w-full h-48 rounded-2xl overflow-hidden shadow-lg"
+                    className="relative w-full h-48"
                   >
                     <img 
                       src={item.image} 
                       alt={item.title}
-                      className="w-full h-full object-contain bg-gradient-to-br from-primary/5 to-secondary/5"
+                      className="w-full h-full object-contain"
                     />
                   </motion.div>
                 </div>
