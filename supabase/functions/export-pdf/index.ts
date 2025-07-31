@@ -138,26 +138,23 @@ serve(async (req) => {
     
     yPosition -= 20; // Extra space before content
     
-    // Story content with pagination - handle line breaks properly
-    if (templateData.story_content && templateData.story_content.trim()) {
-      const paragraphs = templateData.story_content.split(/\n\n+/);
+    // Story content with pagination
+    if (templateData.story_content) {
+      // Split by double newlines to separate paragraphs
+      const paragraphs = templateData.story_content.split('\n\n');
       
       for (const paragraph of paragraphs) {
-        const cleanParagraph = paragraph.trim();
-        if (cleanParagraph === '') {
-          yPosition -= lineHeight; // Empty line
-          continue;
-        }
+        if (!paragraph.trim()) continue;
         
-        const words = cleanParagraph.split(/\s+/);
+        const words = paragraph.trim().split(' ');
         let currentLine = '';
         const maxWidth = width - (margin * 2);
         
         for (const word of words) {
-          const testLine = currentLine ? currentLine + ' ' + word : word;
+          const testLine = currentLine + (currentLine ? ' ' : '') + word;
           const textWidth = helveticaFont.widthOfTextAtSize(testLine, 12);
           
-          if (textWidth > maxWidth && currentLine !== '') {
+          if (textWidth > maxWidth && currentLine) {
             // Draw current line
             page.drawText(currentLine, {
               x: margin,
@@ -171,7 +168,7 @@ serve(async (req) => {
             currentLine = word;
             
             // Check if we need a new page
-            if (yPosition < margin + lineHeight * 3) {
+            if (yPosition < margin + 60) {
               page = pdfDoc.addPage([595, 842]);
               yPosition = height - margin;
             }
@@ -180,7 +177,7 @@ serve(async (req) => {
           }
         }
         
-        // Draw remaining text in the paragraph
+        // Draw remaining text
         if (currentLine) {
           page.drawText(currentLine, {
             x: margin,
@@ -192,24 +189,15 @@ serve(async (req) => {
           yPosition -= lineHeight;
         }
         
-        // Add extra space between paragraphs
+        // Extra space between paragraphs
         yPosition -= lineHeight * 0.5;
         
         // Check if we need a new page
-        if (yPosition < margin + lineHeight * 3) {
+        if (yPosition < margin + 60) {
           page = pdfDoc.addPage([595, 842]);
           yPosition = height - margin;
         }
       }
-    } else {
-      // If no content, add a message
-      page.drawText("Contenu de l'histoire en cours de chargement...", {
-        x: margin,
-        y: yPosition,
-        size: 12,
-        font: helveticaFont,
-        color: rgb(0.7, 0.7, 0.7),
-      });
     }
     
     
@@ -226,7 +214,7 @@ serve(async (req) => {
     });
     
     // Add created with love message
-    lastPage.drawText("Créé avec ❤ par StoryKidAI", {
+    lastPage.drawText("Cree avec amour par StoryKidAI", {
       x: margin,
       y: 50,
       size: 10,
@@ -235,7 +223,7 @@ serve(async (req) => {
     });
     
     // Add creation date
-    lastPage.drawText(`Créé le ${templateData.created_date}`, {
+    lastPage.drawText(`Cree le ${templateData.created_date}`, {
       x: margin,
       y: 30,
       size: 10,
