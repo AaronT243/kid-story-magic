@@ -216,20 +216,20 @@ const Story = () => {
           <Card className="bg-background/50 backdrop-blur-sm border-border/50 mb-8">
             <CardHeader>
               <CardTitle className="text-2xl">{story.title}</CardTitle>
-              <CardDescription className="space-y-2">
-                <div className="flex items-center gap-2 text-sm">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <User className="h-4 w-4" />
                   {story.child_name}, {story.child_age} ans
                 </div>
-                <div className="flex items-center gap-2 text-sm">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Palette className="h-4 w-4" />
                   {getThemeDisplay(story.theme)} • {getLengthDisplay(story.story_length)}
                 </div>
-                <div className="flex items-center gap-2 text-sm">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Calendar className="h-4 w-4" />
                   {new Date(story.created_at).toLocaleDateString('fr-FR')}
                 </div>
-              </CardDescription>
+              </div>
             </CardHeader>
             {story.characters.length > 0 && (
               <CardContent>
