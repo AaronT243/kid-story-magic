@@ -52,8 +52,8 @@ const Auth: React.FC = () => {
       if (isSignUp) {
         if (!gdprConsent) {
           toast({
-            title: 'Erreur',
-            description: 'Vous devez accepter les conditions générales et la politique de confidentialité',
+            title: t('auth.error'),
+            description: t('auth.gdprError'),
             variant: 'destructive',
           });
           return;
@@ -61,8 +61,8 @@ const Auth: React.FC = () => {
 
         if (formData.password !== formData.confirmPassword) {
           toast({
-            title: 'Erreur',
-            description: 'Les mots de passe ne correspondent pas',
+            title: t('auth.error'),
+            description: t('auth.passwordMismatch'),
             variant: 'destructive',
           });
           return;
@@ -77,13 +77,13 @@ const Auth: React.FC = () => {
 
         if (error) {
           toast({
-            title: 'Erreur',
+            title: t('auth.error'),
             description: t('auth.signupError'),
             variant: 'destructive',
           });
         } else {
           toast({
-            title: 'Succès',
+            title: t('auth.success'),
             description: t('auth.signupSuccess'),
           });
         }
@@ -92,7 +92,7 @@ const Auth: React.FC = () => {
 
         if (error) {
           toast({
-            title: 'Erreur',
+            title: t('auth.error'),
             description: t('auth.signinError'),
             variant: 'destructive',
           });
@@ -100,8 +100,8 @@ const Auth: React.FC = () => {
       }
     } catch (error) {
       toast({
-        title: 'Erreur',
-        description: 'Une erreur inattendue s\'est produite',
+        title: t('auth.error'),
+        description: t('auth.unexpectedError'),
         variant: 'destructive',
       });
     } finally {
@@ -120,8 +120,8 @@ const Auth: React.FC = () => {
             </CardTitle>
             <CardDescription className="text-center">
               {isSignUp 
-                ? 'Créez votre compte pour commencer'
-                : 'Connectez-vous à votre compte'
+                ? t('auth.createAccountDesc')
+                : t('auth.signInDesc')
               }
             </CardDescription>
           </CardHeader>
@@ -205,13 +205,13 @@ const Auth: React.FC = () => {
                       className="mt-1"
                     />
                     <Label htmlFor="gdpr-consent" className="text-sm leading-relaxed cursor-pointer">
-                      J'accepte les{" "}
+                      {t('auth.gdprConsent')}{" "}
                       <Link to="/terms" className="text-primary hover:underline" target="_blank">
-                        conditions générales
+                        {t('auth.terms')}
                       </Link>{" "}
-                      et la{" "}
+                      {t('auth.and')}{" "}
                       <Link to="/privacy" className="text-primary hover:underline" target="_blank">
-                        politique de confidentialité
+                        {t('auth.privacy')}
                       </Link>. <span className="text-destructive">*</span>
                     </Label>
                   </div>
@@ -224,7 +224,7 @@ const Auth: React.FC = () => {
                       className="mt-1"
                     />
                     <Label htmlFor="newsletter-consent" className="text-sm leading-relaxed cursor-pointer">
-                      Je souhaite recevoir la newsletter et les nouveautés de StoryKid AI.
+                      {t('auth.newsletterConsent')}
                     </Label>
                   </div>
                 </div>
@@ -235,7 +235,7 @@ const Auth: React.FC = () => {
                 className="w-full" 
                 disabled={loading}
               >
-                {loading ? 'Chargement...' : (isSignUp ? t('auth.signup') : t('auth.signin'))}
+                {loading ? t('auth.loading') : (isSignUp ? t('auth.signup') : t('auth.signin'))}
               </Button>
             </form>
             
