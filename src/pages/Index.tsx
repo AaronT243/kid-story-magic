@@ -6,6 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Navigation from '@/components/Navigation';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 import { 
   BookOpen, 
   Sparkles, 
@@ -56,6 +58,37 @@ const Index = () => {
 
   const handlePlanSelection = (plan: string) => {
     setSelectedPlan(plan);
+  };
+
+  const handleCheckout = async (plan: 'starter' | 'premium') => {
+    if (!user) {
+      // Si l'utilisateur n'est pas connecté, le rediriger vers l'auth avec le plan sélectionné
+      setSelectedPlan(plan);
+      return;
+    }
+
+    try {
+      toast.loading('Création de la session de paiement...');
+      
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: { plan }
+      });
+      
+      if (error) throw error;
+      
+      if (!data?.url) {
+        throw new Error('URL de checkout manquante');
+      }
+
+      // Ouvrir Stripe checkout dans un nouvel onglet
+      window.open(data.url, '_blank');
+      toast.dismiss();
+      toast.success('Redirection vers le paiement...');
+    } catch (error: any) {
+      console.error('Error creating checkout session:', error);
+      toast.dismiss();
+      toast.error('Erreur lors de la création de la session de paiement');
+    }
   };
 
   return (
@@ -134,36 +167,36 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
               <motion.div 
                 whileHover={{ scale: 1.05 }}
-                className="relative rounded-2xl overflow-hidden shadow-lg"
+                className="relative rounded-3xl overflow-hidden shadow-lg"
               >
                 <img 
                   src="/lovable-uploads/94d8d03a-f93f-4e53-ae6c-aa735e6c8e80.png" 
                   alt="Famille lisant ensemble" 
-                  className="w-full h-64 object-cover"
+                  className="w-full h-64 object-contain bg-gradient-to-br from-primary/5 to-secondary/5"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
               </motion.div>
               
               <motion.div 
                 whileHover={{ scale: 1.05 }}
-                className="relative rounded-2xl overflow-hidden shadow-lg"
+                className="relative rounded-3xl overflow-hidden shadow-lg"
               >
                 <img 
                   src="/lovable-uploads/34c72a1e-2b83-4459-9a12-642ca8703a28.png" 
                   alt="Livre magique avec illustrations" 
-                  className="w-full h-64 object-cover"
+                  className="w-full h-64 object-contain bg-gradient-to-br from-secondary/5 to-accent/5"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-secondary/20 to-transparent"></div>
               </motion.div>
               
               <motion.div 
                 whileHover={{ scale: 1.05 }}
-                className="relative rounded-2xl overflow-hidden shadow-lg"
+                className="relative rounded-3xl overflow-hidden shadow-lg"
               >
                 <img 
                   src="/lovable-uploads/5abad710-211f-4e3f-be46-bbaee88ab3c7.png" 
                   alt="Enfant lisant avec des étoiles magiques" 
-                  className="w-full h-64 object-cover"
+                  className="w-full h-64 object-contain bg-gradient-to-br from-accent/5 to-primary/5"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-accent/20 to-transparent"></div>
               </motion.div>
@@ -227,12 +260,12 @@ const Index = () => {
                   </div>
                   <motion.div
                     whileHover={{ scale: 1.05 }}
-                    className="relative w-full h-48 rounded-xl overflow-hidden shadow-lg"
+                    className="relative w-full h-48 rounded-2xl overflow-hidden shadow-lg"
                   >
                     <img 
                       src={item.image} 
                       alt={item.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain bg-gradient-to-br from-primary/5 to-secondary/5"
                     />
                   </motion.div>
                 </div>
@@ -429,17 +462,28 @@ const Index = () => {
                       ))}
                     </ul>
                     
-                    <Button
-                      onClick={() => handlePlanSelection(plan.name)}
-                      className={`w-full mt-6 bg-gradient-to-r ${plan.gradient} hover:opacity-90 text-white font-medium py-3 transition-all duration-300 ${
-                        selectedPlan === plan.name ? 'ring-2 ring-offset-2 ring-primary' : ''
-                      }`}
-                      asChild
-                    >
-                      <Link to="/auth">
+                    {user ? (
+                      <Button
+                        onClick={() => handleCheckout(plan.name.toLowerCase() as 'starter' | 'premium')}
+                        className={`w-full mt-6 bg-gradient-to-r ${plan.gradient} hover:opacity-90 text-white font-medium py-3 transition-all duration-300 ${
+                          selectedPlan === plan.name ? 'ring-2 ring-offset-2 ring-primary' : ''
+                        }`}
+                      >
                         {selectedPlan === plan.name ? 'Plan sélectionné ✓' : 'Choisir ce plan'}
-                      </Link>
-                    </Button>
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => handlePlanSelection(plan.name)}
+                        className={`w-full mt-6 bg-gradient-to-r ${plan.gradient} hover:opacity-90 text-white font-medium py-3 transition-all duration-300 ${
+                          selectedPlan === plan.name ? 'ring-2 ring-offset-2 ring-primary' : ''
+                        }`}
+                        asChild
+                      >
+                        <Link to="/auth">
+                          {selectedPlan === plan.name ? 'Plan sélectionné ✓' : 'Choisir ce plan'}
+                        </Link>
+                      </Button>
+                    )}
                   </CardContent>
                 </Card>
               </motion.div>
