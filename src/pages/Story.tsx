@@ -126,30 +126,55 @@ const Story = () => {
     }
   };
 
-  const handlePrintOrder = async (productType: 'hardcover_book' | 'softcover_book' = 'hardcover_book') => {
+  const handlePrintOrder = async () => {
     if (!story?.id) return;
     
     setPrintLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('create-print-order', {
-        body: { 
-          story_id: story.id,
-          product_type: productType
-        }
+      console.log('Generating PDF for printing with story ID:', story.id);
+      const response = await supabase.functions.invoke('export-pdf', {
+        body: { story_id: story.id }
       });
 
-      if (error) throw error;
+      console.log('Print PDF response:', response);
 
-      if (data.success && data.checkout_url) {
-        // Open Stripe checkout in new tab
-        window.open(data.checkout_url, '_blank');
-        toast.success('Redirection vers le paiement...');
+      if (response.error) {
+        console.error('Supabase function error:', response.error);
+        throw response.error;
+      }
+
+      // The response.data should be the PDF blob
+      if (response.data) {
+        // Create blob from the PDF data
+        const uint8Array = new Uint8Array(response.data);
+        const blob = new Blob([uint8Array], { type: 'application/pdf' });
+        
+        // Create URL for the PDF
+        const url = URL.createObjectURL(blob);
+        
+        // Open PDF in new window and trigger print dialog
+        const printWindow = window.open(url, '_blank');
+        if (printWindow) {
+          printWindow.onload = () => {
+            setTimeout(() => {
+              printWindow.print();
+            }, 500); // Small delay to ensure PDF is loaded
+          };
+        }
+        
+        // Clean up URL after a delay
+        setTimeout(() => {
+          URL.revokeObjectURL(url);
+        }, 10000);
+        
+        toast.success('Document prêt pour impression !');
       } else {
-        toast.error('Erreur lors de la création de la commande');
+        console.error('No PDF data received for printing');
+        toast.error('Erreur lors de la préparation de l\'impression');
       }
     } catch (error: any) {
-      console.error('Error creating print order:', error);
-      toast.error('Erreur lors de la commande d\'impression: ' + error.message);
+      console.error('Error preparing print:', error);
+      toast.error('Erreur lors de la préparation de l\'impression: ' + (error.message || 'Erreur inconnue'));
     } finally {
       setPrintLoading(false);
     }
@@ -284,7 +309,7 @@ const Story = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => handlePrintOrder('hardcover_book')}
+                      onClick={handlePrintOrder}
                       disabled={printLoading}
                       className="flex-1 sm:flex-none"
                     >
