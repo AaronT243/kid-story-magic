@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
-import LanguageSelector from '@/components/LanguageSelector';
+import Navigation from '@/components/Navigation';
 import { BookOpen, Sparkles, Download, Printer } from 'lucide-react';
 
 const Index = () => {
@@ -14,38 +14,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/10">
       {/* Navigation */}
-      <nav className="container mx-auto px-4 py-6 flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <BookOpen className="h-8 w-8 text-primary" />
-          <span className="text-2xl font-bold">StoryKidAI</span>
-        </div>
-        
-        <div className="flex items-center space-x-4">
-          <LanguageSelector />
-          {user ? (
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" asChild>
-                <Link to="/stories">Mes histoires</Link>
-              </Button>
-              <span className="text-sm text-muted-foreground">
-                Bonjour, {profile?.first_name || user.email}
-              </span>
-              <Button variant="outline" onClick={signOut}>
-                {t('nav.signout')}
-              </Button>
-            </div>
-          ) : (
-            <div className="flex items-center space-x-2">
-              <Button variant="outline" asChild>
-                <Link to="/auth">{t('nav.signin')}</Link>
-              </Button>
-              <Button asChild>
-                <Link to="/auth">{t('nav.signup')}</Link>
-              </Button>
-            </div>
-          )}
-        </div>
-      </nav>
+      <Navigation />
 
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-20 text-center">

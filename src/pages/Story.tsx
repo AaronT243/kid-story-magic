@@ -5,8 +5,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { BookOpen, ArrowLeft, Calendar, User, Palette, Loader2, Download, Printer } from 'lucide-react';
+import { Calendar, User, Palette, Loader2, Download, Printer, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
+import Navigation from '@/components/Navigation';
 
 interface Story {
   id: string;
@@ -235,21 +236,7 @@ const Story = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/10">
       {/* Navigation */}
-      <nav className="container mx-auto px-4 py-6 flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <BookOpen className="h-8 w-8 text-primary" />
-          <span className="text-2xl font-bold">StoryKidAI</span>
-        </div>
-        
-        <div className="flex items-center space-x-4">
-          <Button variant="outline" asChild>
-            <Link to="/stories">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Mes histoires
-            </Link>
-          </Button>
-        </div>
-      </nav>
+      <Navigation showBackButton backTo="/stories" backLabel="Mes histoires" />
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
