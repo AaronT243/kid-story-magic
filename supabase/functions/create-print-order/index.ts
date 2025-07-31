@@ -2,6 +2,7 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import Stripe from "https://esm.sh/stripe@14.21.0";
+import { PDFDocument, rgb, StandardFonts } from "https://cdn.skypack.dev/pdf-lib@1.17.1";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -66,10 +67,7 @@ serve(async (req) => {
       throw new Error("Story is not completed yet");
     }
 
-    // First, create PDF with PdfMonkey for print
-    const pdfMonkeyApiKey = Deno.env.get('PDFMONKEY_API_KEY');
-    if (!pdfMonkeyApiKey) throw new Error("PdfMonkey API key not configured");
-
+    // Generate PDF for print using simple PDF generation
     const templateData = {
       story_title: story.title,
       child_name: story.child_name,
@@ -81,36 +79,123 @@ serve(async (req) => {
       illustrations: story.illustration_urls || []
     };
 
-    const pdfResponse = await fetch('https://api.pdfmonkey.io/api/v1/documents', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${pdfMonkeyApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        document: {
-          document_template_id: 'story-print-template', // Different template optimized for print
-          payload: templateData,
-          meta: {
-            _filename: `${story.title.replace(/[^a-zA-Z0-9]/g, '_')}_print.pdf`
-          }
-        }
-      }),
-    });
-
-    if (!pdfResponse.ok) {
-      const errorText = await pdfResponse.text();
-      logStep("PdfMonkey error", { status: pdfResponse.status, error: errorText });
-      throw new Error(`PDF generation failed: ${pdfResponse.status} - ${errorText}`);
-    }
-
-    const pdfResult = await pdfResponse.json();
-    const pdfUrl = pdfResult.document?.download_url;
+    // Create PDF for print order (we'll store it temporarily for Gelato)
+    const pdfDoc = await PDFDocument.create();
+    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const helveticaBoldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
     
-    if (!pdfUrl) {
-      throw new Error("PDF generation failed - no download URL");
+    // Add first page
+    let page = pdfDoc.addPage([595, 842]); // A4 size
+    const { width, height } = page.getSize();
+    
+    let yPosition = height - 50;
+    const margin = 50;
+    const lineHeight = 20;
+    
+    // Title
+    page.drawText(templateData.story_title, {
+      x: margin,
+      y: yPosition,
+      size: 24,
+      font: helveticaBoldFont,
+      color: rgb(0, 0, 0),
+    });
+    yPosition -= 40;
+    
+    // Child info
+    page.drawText(`Histoire pour ${templateData.child_name}, ${templateData.child_age} ans`, {
+      x: margin,
+      y: yPosition,
+      size: 14,
+      font: helveticaFont,
+      color: rgb(0.3, 0.3, 0.3),
+    });
+    yPosition -= 30;
+    
+    // Theme and characters
+    if (templateData.theme) {
+      page.drawText(`Thème: ${templateData.theme}`, {
+        x: margin,
+        y: yPosition,
+        size: 12,
+        font: helveticaFont,
+        color: rgb(0.5, 0.5, 0.5),
+      });
+      yPosition -= lineHeight;
     }
-    logStep("PDF generated", { pdfUrl });
+    
+    if (templateData.characters) {
+      page.drawText(`Personnages: ${templateData.characters}`, {
+        x: margin,
+        y: yPosition,
+        size: 12,
+        font: helveticaFont,
+        color: rgb(0.5, 0.5, 0.5),
+      });
+      yPosition -= lineHeight;
+    }
+    
+    yPosition -= 20; // Extra space before content
+    
+    // Story content with pagination
+    const words = templateData.story_content.split(' ');
+    let currentLine = '';
+    const maxWidth = width - (margin * 2);
+    
+    for (const word of words) {
+      const testLine = currentLine + word + ' ';
+      const textWidth = helveticaFont.widthOfTextAtSize(testLine, 12);
+      
+      if (textWidth > maxWidth && currentLine !== '') {
+        // Draw current line
+        page.drawText(currentLine.trim(), {
+          x: margin,
+          y: yPosition,
+          size: 12,
+          font: helveticaFont,
+          color: rgb(0, 0, 0),
+        });
+        
+        yPosition -= lineHeight;
+        currentLine = word + ' ';
+        
+        // Check if we need a new page
+        if (yPosition < margin + lineHeight) {
+          page = pdfDoc.addPage([595, 842]);
+          yPosition = height - margin;
+        }
+      } else {
+        currentLine = testLine;
+      }
+    }
+    
+    // Draw remaining text
+    if (currentLine.trim()) {
+      page.drawText(currentLine.trim(), {
+        x: margin,
+        y: yPosition,
+        size: 12,
+        font: helveticaFont,
+        color: rgb(0, 0, 0),
+      });
+    }
+    
+    // Add footer
+    const lastPage = pdfDoc.getPages()[pdfDoc.getPageCount() - 1];
+    lastPage.drawText(`Créé le ${templateData.created_date}`, {
+      x: margin,
+      y: 30,
+      size: 10,
+      font: helveticaFont,
+      color: rgb(0.6, 0.6, 0.6),
+    });
+    
+    const pdfBytes = await pdfDoc.save();
+    logStep("PDF generated for print", { size: pdfBytes.length });
+
+    // For now, we'll use a placeholder URL since we're not using external PDF service
+    const pdfUrl = `data:application/pdf;base64,${btoa(String.fromCharCode(...pdfBytes))}`;
+    logStep("PDF data prepared", { pdfUrl: "data URL created" });
 
     // Create Gelato print order
     const gelatoApiKey = Deno.env.get('GELATO_API_KEY');
