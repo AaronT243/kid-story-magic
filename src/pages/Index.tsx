@@ -24,6 +24,9 @@ const Index = () => {
           <LanguageSelector />
           {user ? (
             <div className="flex items-center space-x-4">
+              <Button variant="outline" asChild>
+                <Link to="/stories">Mes histoires</Link>
+              </Button>
               <span className="text-sm text-muted-foreground">
                 Bonjour, {user.email}
               </span>
@@ -54,8 +57,8 @@ const Index = () => {
         </p>
         
         {user ? (
-          <Button size="lg" className="text-lg px-8 py-6">
-            {t('home.cta')}
+          <Button size="lg" className="text-lg px-8 py-6" asChild>
+            <Link to="/create-story">{t('home.cta')}</Link>
           </Button>
         ) : (
           <Button size="lg" className="text-lg px-8 py-6" asChild>
