@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { BookOpen, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LanguageSelector from './LanguageSelector';
@@ -27,9 +27,10 @@ const Navigation: React.FC<NavigationProps> = ({ showBackButton, backTo = '/stor
 
   return (
     <nav className="container mx-auto px-4 py-6 flex justify-between items-center">
-      <div className="flex items-center space-x-2">
-        <BookOpen className="h-8 w-8 text-primary" />
-        <Link to="/" className="text-2xl font-bold">StoryKidAI</Link>
+      <div className="flex items-center">
+        <Link to="/" className="text-2xl font-bold text-foreground hover:text-primary transition-colors">
+          StoryKidAI
+        </Link>
       </div>
       
       <div className="flex items-center space-x-4">
