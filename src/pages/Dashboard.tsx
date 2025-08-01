@@ -87,6 +87,30 @@ const Dashboard = () => {
     return t('dashboard.suggestionTextDefault');
   };
 
+  const handleDownloadStory = async (storyId: string) => {
+    try {
+      const { data, error } = await supabase.functions.invoke('export-pdf', {
+        body: { storyId }
+      });
+      if (error) throw error;
+      
+      // Open PDF in new tab
+      if (data?.pdfUrl) {
+        window.open(data.pdfUrl, '_blank');
+      }
+    } catch (error) {
+      console.error('Erreur lors du téléchargement:', error);
+    }
+  };
+
+  const handleReadStory = (storyId: string) => {
+    navigate(`/story/${storyId}`);
+  };
+
+  const handlePrintStory = (storyId: string) => {
+    navigate(`/print-success?story=${storyId}`);
+  };
+
   const quickActions = [
     {
       icon: BookOpen,
@@ -111,22 +135,6 @@ const Dashboard = () => {
       href: '/#plans',
       gradient: 'from-accent to-primary',
       emoji: '🧾'
-    },
-    {
-      icon: User,
-      title: t('dashboard.profile'),
-      description: 'Personnalisez votre profil',
-      href: '/profile',
-      gradient: 'from-primary via-secondary to-accent',
-      emoji: '👤'
-    },
-    {
-      icon: Download,
-      title: t('dashboard.downloads'),
-      description: 'Téléchargez vos livres',
-      href: '/downloads',
-      gradient: 'from-secondary via-accent to-primary',
-      emoji: '📥'
     }
   ];
 
@@ -291,17 +299,32 @@ const Dashboard = () => {
                             {t('dashboard.createdOn')} {formatDate(story.created_at)}
                           </p>
                         </div>
-                        <div className="flex gap-2">
-                          <Button size="sm" variant="outline" className="hover:bg-primary hover:text-white">
-                            <Download className="h-4 w-4" />
-                          </Button>
-                          <Button size="sm" variant="outline" className="hover:bg-secondary hover:text-white">
-                            <FileText className="h-4 w-4" />
-                          </Button>
-                          <Button size="sm" variant="outline" className="hover:bg-accent hover:text-white">
-                            <Printer className="h-4 w-4" />
-                          </Button>
-                        </div>
+                         <div className="flex gap-2">
+                           <Button 
+                             size="sm" 
+                             variant="outline" 
+                             className="hover:bg-primary hover:text-white"
+                             onClick={() => handleDownloadStory(story.id)}
+                           >
+                             <Download className="h-4 w-4" />
+                           </Button>
+                           <Button 
+                             size="sm" 
+                             variant="outline" 
+                             className="hover:bg-secondary hover:text-white"
+                             onClick={() => handleReadStory(story.id)}
+                           >
+                             <FileText className="h-4 w-4" />
+                           </Button>
+                           <Button 
+                             size="sm" 
+                             variant="outline" 
+                             className="hover:bg-accent hover:text-white"
+                             onClick={() => handlePrintStory(story.id)}
+                           >
+                             <Printer className="h-4 w-4" />
+                           </Button>
+                         </div>
                       </motion.div>
                     ))}
                   </div>
