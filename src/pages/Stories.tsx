@@ -197,17 +197,30 @@ const Stories = () => {
               Accueil
             </Link>
           </Button>
-          <Button asChild>
-            <Link to="/create-story">
-              <Plus className="h-4 w-4 mr-2" />
-              Nouvelle histoire
-            </Link>
-          </Button>
+          {/* Desktop: Button in nav */}
+          <div className="hidden md:block">
+            <Button asChild>
+              <Link to="/create-story">
+                <Plus className="h-4 w-4 mr-2" />
+                Nouvelle histoire
+              </Link>
+            </Button>
+          </div>
         </div>
       </nav>
 
         {/* Main Content */}
         <div className="container mx-auto px-4 py-8">
+          {/* Mobile: Button above title */}
+          <div className="md:hidden mb-6 text-center">
+            <Button asChild>
+              <Link to="/create-story">
+                <Plus className="h-4 w-4 mr-2" />
+                Nouvelle histoire
+              </Link>
+            </Button>
+          </div>
+          
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               Mes histoires

@@ -21,6 +21,12 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import heroImage from '@/assets/dashboard-hero.jpg';
+import slider1 from '@/assets/slider-1.jpg';
+import slider2 from '@/assets/slider-2.jpg';
+import slider3 from '@/assets/slider-3.jpg';
+import slider4 from '@/assets/slider-4.jpg';
+import slider5 from '@/assets/slider-5.jpg';
+import slider6 from '@/assets/slider-6.jpg';
 
 interface Story {
   id: string;
@@ -108,8 +114,29 @@ const Dashboard = () => {
   };
 
   const handlePrintStory = (storyId: string) => {
-    navigate(`/print-success?story=${storyId}`);
+    navigate(`/story/${storyId}`);
   };
+
+  const sliderImages = [
+    { src: slider1, alt: "Princesse magique dans une forêt enchantée" },
+    { src: slider2, alt: "Aventure magique avec des animaux" },
+    { src: slider3, alt: "Monde fantastique avec des pingouins" },
+    { src: slider4, alt: "Paysage magique de montagne" },
+    { src: slider5, alt: "Aventure dans la nature avec des cerfs" },
+    { src: slider6, alt: "Super-héros pour enfants" }
+  ];
+
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlideIndex((prevIndex) => 
+        prevIndex === sliderImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [sliderImages.length]);
 
   const quickActions = [
     {
@@ -132,7 +159,7 @@ const Dashboard = () => {
       icon: CreditCard,
       title: t('dashboard.subscription'),
       description: 'Gérez votre abonnement',
-      href: '/#plans',
+      href: '/plans',
       gradient: 'from-accent to-primary',
       emoji: '🧾'
     }
@@ -190,7 +217,7 @@ const Dashboard = () => {
               
               <Button 
                 size="lg" 
-                className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl transition-all duration-300" 
+                className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl transition-all duration-300 mb-8" 
                 asChild
               >
                 <Link to="/create-story">
@@ -198,6 +225,51 @@ const Dashboard = () => {
                   {t('dashboard.createBook')}
                 </Link>
               </Button>
+
+              {/* Image Slider */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="relative w-full h-64 rounded-2xl overflow-hidden shadow-xl"
+              >
+                <div className="relative w-full h-full">
+                  {sliderImages.map((image, index) => (
+                    <motion.div
+                      key={index}
+                      className="absolute inset-0"
+                      initial={{ opacity: 0 }}
+                      animate={{ 
+                        opacity: currentSlideIndex === index ? 1 : 0,
+                        scale: currentSlideIndex === index ? 1 : 1.1
+                      }}
+                      transition={{ duration: 0.8 }}
+                    >
+                      <img 
+                        src={image.src} 
+                        alt={image.alt}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                    </motion.div>
+                  ))}
+                </div>
+                
+                {/* Slider Indicators */}
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                  {sliderImages.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                        currentSlideIndex === index 
+                          ? 'bg-white shadow-lg' 
+                          : 'bg-white/50 hover:bg-white/75'
+                      }`}
+                      onClick={() => setCurrentSlideIndex(index)}
+                    />
+                  ))}
+                </div>
+              </motion.div>
             </motion.div>
 
             <motion.div

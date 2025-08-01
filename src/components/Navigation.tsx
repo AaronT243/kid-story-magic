@@ -55,7 +55,7 @@ const Navigation: React.FC<NavigationProps> = ({ showBackButton, backTo = '/stor
                   <Link to="/stories">Mes livres</Link>
                 </Button>
                 <Button variant="ghost" asChild>
-                  <Link to="/#plans">Mon abonnement</Link>
+                  <Link to="/plans">Mon abonnement</Link>
                 </Button>
                 <Button variant="ghost" asChild>
                   <Link to="/contact">Aide</Link>
@@ -129,7 +129,7 @@ const Navigation: React.FC<NavigationProps> = ({ showBackButton, backTo = '/stor
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/#plans" className="w-full">
+                    <Link to="/plans" className="w-full">
                       Mon abonnement
                     </Link>
                   </DropdownMenuItem>
