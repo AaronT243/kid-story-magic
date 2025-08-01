@@ -24,6 +24,9 @@ import {
   Check
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import girlDreamingBook from '@/assets/girl-dreaming-book.jpg';
+import boyDreamingBook from '@/assets/boy-dreaming-book.jpg';
+import motherReadingChildren from '@/assets/mother-reading-children.jpg';
 
 const Index = () => {
   const { user, profile } = useAuth();
@@ -193,40 +196,117 @@ const Index = () => {
               )}
             </div>
 
-            {/* Hero Images */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="relative"
+            {/* Hero Images - Magical Gallery */}
+            <div className="relative">
+              {/* Floating Magic Elements */}
+              <motion.div
+                animate={{ 
+                  y: [0, -20, 0],
+                  rotate: [0, 10, 0]
+                }}
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="absolute -top-4 -left-4 text-4xl z-10"
               >
-                <img 
-                  src="/lovable-uploads/94d8d03a-f93f-4e53-ae6c-aa735e6c8e80.png" 
-                  alt="Famille lisant ensemble" 
-                  className="w-full h-64 object-contain"
-                />
+                ✨
               </motion.div>
               
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="relative"
+              <motion.div
+                animate={{ 
+                  y: [0, -15, 0],
+                  rotate: [0, -10, 0]
+                }}
+                transition={{ 
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 1
+                }}
+                className="absolute -top-2 -right-6 text-3xl z-10"
               >
-                <img 
-                  src="/lovable-uploads/34c72a1e-2b83-4459-9a12-642ca8703a28.png" 
-                  alt="Livre magique avec illustrations" 
-                  className="w-full h-64 object-contain"
-                />
+                🌟
               </motion.div>
               
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="relative"
+              <motion.div
+                animate={{ 
+                  y: [0, -10, 0],
+                  x: [0, 5, 0]
+                }}
+                transition={{ 
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 0.5
+                }}
+                className="absolute bottom-8 left-8 text-2xl z-10"
               >
-                <img 
-                  src="/lovable-uploads/5abad710-211f-4e3f-be46-bbaee88ab3c7.png" 
-                  alt="Enfant lisant avec des étoiles magiques" 
-                  className="w-full h-64 object-contain"
-                />
+                🦋
               </motion.div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  whileHover={{ 
+                    scale: 1.05,
+                    rotate: 1,
+                    boxShadow: "0 20px 40px rgba(200, 30, 171, 0.2)"
+                  }}
+                  className="relative group"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+                  <img 
+                    src={girlDreamingBook} 
+                    alt="Petite fille rêvant devant un livre magique" 
+                    className="relative w-full h-64 object-cover rounded-3xl shadow-2xl border-4 border-white/50"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent rounded-3xl"></div>
+                </motion.div>
+                
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  whileHover={{ 
+                    scale: 1.05,
+                    rotate: -1,
+                    boxShadow: "0 20px 40px rgba(200, 30, 171, 0.2)"
+                  }}
+                  className="relative group"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-secondary/20 to-accent/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+                  <img 
+                    src={motherReadingChildren} 
+                    alt="Mère joyeuse lisant avec ses enfants" 
+                    className="relative w-full h-64 object-cover rounded-3xl shadow-2xl border-4 border-white/50"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent rounded-3xl"></div>
+                </motion.div>
+                
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                  whileHover={{ 
+                    scale: 1.05,
+                    rotate: 1,
+                    boxShadow: "0 20px 40px rgba(200, 30, 171, 0.2)"
+                  }}
+                  className="relative group"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-accent/20 to-primary/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+                  <img 
+                    src={boyDreamingBook} 
+                    alt="Petit garçon émerveillé par un livre magique" 
+                    className="relative w-full h-64 object-cover rounded-3xl shadow-2xl border-4 border-white/50"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent rounded-3xl"></div>
+                </motion.div>
+              </div>
             </div>
           </motion.div>
         </div>

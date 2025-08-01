@@ -376,7 +376,7 @@ const Dashboard = () => {
                              size="sm" 
                              variant="outline" 
                              className="hover:bg-primary hover:text-white"
-                             onClick={() => handleDownloadStory(story.id)}
+                             onClick={() => handleReadStory(story.id)}
                            >
                              <Download className="h-4 w-4" />
                            </Button>
