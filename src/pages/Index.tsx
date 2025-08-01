@@ -69,6 +69,41 @@ const Index = () => {
       parent: "Julie, maman de Clara (5 ans)",
       text: "Clara collectionne ses livres personnalisés. C'est devenu notre rituel du coucher préféré.",
       child: "Clara : 'Maman, on fait une nouvelle aventure ?'"
+    },
+    {
+      parent: "Emma, maman de Maxime (7 ans)",
+      text: "Maxime ne voulait pas lire avant, maintenant il dévore tous ses livres personnalisés ! C'est magique.",
+      child: "Maxime : 'Je suis le meilleur chevalier de tout l'univers !'"
+    },
+    {
+      parent: "Pierre, papa de Luna (4 ans)",
+      text: "Luna se reconnaît dans chaque histoire et ça développe son imagination de façon incroyable.",
+      child: "Luna : 'Papa, dans le prochain livre, je veux voler avec les papillons !'"
+    },
+    {
+      parent: "Camille, maman de Nathan (9 ans)",
+      text: "Nathan a des difficultés d'apprentissage, mais avec ses livres personnalisés, il a retrouvé l'amour de la lecture.",
+      child: "Nathan : 'C'est moi le héros qui sauve le monde !'"
+    },
+    {
+      parent: "Julien, papa d'Alice (6 ans)",
+      text: "Alice était très timide à l'école. Grâce à ses aventures de héroïne, elle a gagné en confiance.",
+      child: "Alice : 'Moi aussi je peux être courageuse comme dans mon livre !'"
+    },
+    {
+      parent: "Sarah, maman de Théo (5 ans)",
+      text: "Théo garde précieusement chaque livre. Il dit que ce sont ses 'vrais souvenirs d'aventures' !",
+      child: "Théo : 'Maman, regarde ! C'est quand j'ai sauvé les dinosaures !'"
+    },
+    {
+      parent: "David, papa de Chloé (8 ans)",
+      text: "Chloé partage ses livres avec ses copines à l'école. Elle est fière d'être l'héroïne de ses histoires.",
+      child: "Chloé : 'Regardez ! Dans ce livre, c'est moi qui découvre le trésor magique !'"
+    },
+    {
+      parent: "Amélie, maman de Lucas (7 ans)",
+      text: "Lucas a des problèmes de sommeil, mais depuis qu'on lit ses aventures le soir, il s'endort paisiblement.",
+      child: "Lucas : 'J'ai hâte de rêver de mes nouvelles aventures cette nuit !'"
     }
   ];
 
@@ -329,58 +364,184 @@ const Index = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {[
-              {
-                step: "1",
-                icon: Users,
-                title: "Parlez-nous de votre enfant",
-                description: "Prénom, âge, passions, couleurs préférées... Plus nous en savons, plus l'histoire sera personnalisée !",
-                image: "/lovable-uploads/64450931-8399-406a-bdbe-4981b68faed4.png"
-              },
-              {
-                step: "2", 
-                icon: Wand2,
-                title: "L'IA crée la magie",
-                description: "Notre intelligence artificielle génère une histoire unique avec des illustrations sur mesure où votre enfant est le héros.",
-                image: "/lovable-uploads/8e23cfa4-aa51-46c7-9bbc-aea890d2957b.png"
-              },
-              {
-                step: "3",
-                icon: BookOpen,
-                title: "Téléchargez ou imprimez",
-                description: "Récupérez votre livre en PDF ou commandez une version imprimée de qualité pour garder ce trésor à vie.",
-                image: "/lovable-uploads/2a418326-2b00-4459-8b52-7f20d94f8250.png"
-              }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.2 }}
-                className="text-center"
-              >
-                <div className="relative mb-8">
-                  <div className="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <span className="text-2xl font-bold text-white">{item.step}</span>
+          {/* Floating Magic Elements for the whole section */}
+          <div className="relative">
+            <motion.div
+              animate={{ 
+                y: [0, -20, 0],
+                rotate: [0, 15, 0],
+                scale: [1, 1.1, 1]
+              }}
+              transition={{ 
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute top-0 left-16 text-3xl z-10"
+            >
+              🦄
+            </motion.div>
+            
+            <motion.div
+              animate={{ 
+                y: [0, -15, 0],
+                x: [0, 10, 0],
+                rotate: [0, -10, 0]
+              }}
+              transition={{ 
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 2
+              }}
+              className="absolute top-20 right-20 text-2xl z-10"
+            >
+              ⚔️
+            </motion.div>
+            
+            <motion.div
+              animate={{ 
+                y: [0, -25, 0],
+                scale: [1, 1.2, 1]
+              }}
+              transition={{ 
+                duration: 5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1
+              }}
+              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-4xl z-10"
+            >
+              📚✨
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              {[
+                {
+                  step: "1",
+                  icon: Users,
+                  title: "Parlez-nous de votre enfant",
+                  description: "Prénom, âge, passions, couleurs préférées... Plus nous en savons, plus l'histoire sera personnalisée !",
+                  image: girlDreamingBook,
+                  magicElement: "🦄✨"
+                },
+                {
+                  step: "2", 
+                  icon: Wand2,
+                  title: "L'IA crée la magie",
+                  description: "Notre intelligence artificielle génère une histoire unique avec des illustrations sur mesure où votre enfant est le héros.",
+                  image: boyDreamingBook,
+                  magicElement: "⚔️🌟"
+                },
+                {
+                  step: "3",
+                  icon: BookOpen,
+                  title: "Téléchargez ou imprimez",
+                  description: "Récupérez votre livre en PDF ou commandez une version imprimée de qualité pour garder ce trésor à vie.",
+                  image: motherReadingChildren,
+                  magicElement: "📖💫"
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.2 }}
+                  whileHover={{ 
+                    scale: 1.05,
+                    rotateY: 5,
+                    rotateX: 5
+                  }}
+                  className="text-center relative group"
+                >
+                  <div className="relative mb-8">
+                    {/* Magic particles around step circle */}
+                    <motion.div
+                      animate={{ 
+                        rotate: 360
+                      }}
+                      transition={{ 
+                        duration: 20,
+                        repeat: Infinity,
+                        ease: "linear"
+                      }}
+                      className="absolute inset-0 w-24 h-24 mx-auto"
+                    >
+                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 text-lg">✨</div>
+                      <div className="absolute right-0 top-1/2 transform translate-x-2 -translate-y-1/2 text-lg">⭐</div>
+                      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-2 text-lg">💫</div>
+                      <div className="absolute left-0 top-1/2 transform -translate-x-2 -translate-y-1/2 text-lg">🌟</div>
+                    </motion.div>
+                    
+                    <motion.div
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      className="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl relative z-10"
+                    >
+                      <span className="text-2xl font-bold text-white">{item.step}</span>
+                    </motion.div>
+                    
+                    {/* Magic floating element for each card */}
+                    <motion.div
+                      animate={{ 
+                        y: [0, -10, 0],
+                        rotate: [0, 10, -10, 0]
+                      }}
+                      transition={{ 
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: index * 0.5
+                      }}
+                      className="absolute -top-4 -right-4 text-2xl z-20"
+                    >
+                      {item.magicElement}
+                    </motion.div>
+                    
+                    <motion.div
+                      whileHover={{ 
+                        scale: 1.05,
+                        rotateY: 10,
+                        boxShadow: "0 25px 50px rgba(200, 30, 171, 0.3)"
+                      }}
+                      className="relative w-full h-64 group"
+                    >
+                      {/* Magical glow effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                      
+                      <img 
+                        src={item.image} 
+                        alt={item.title}
+                        className="relative w-full h-full object-cover rounded-3xl shadow-2xl border-4 border-white/30 group-hover:border-primary/50 transition-all duration-300"
+                      />
+                      
+                      {/* Magical overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent rounded-3xl"></div>
+                      
+                      {/* Sparkle effect on hover */}
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        whileHover={{ opacity: 1 }}
+                        className="absolute inset-0 rounded-3xl"
+                        style={{
+                          background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)`
+                        }}
+                      />
+                    </motion.div>
                   </div>
+                  
                   <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    className="relative w-full h-48"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <img 
-                      src={item.image} 
-                      alt={item.title}
-                      className="w-full h-full object-contain"
-                    />
+                    <item.icon className="h-8 w-8 text-primary mx-auto mb-4" />
                   </motion.div>
-                </div>
-                <item.icon className="h-8 w-8 text-primary mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-3 text-foreground">{item.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{item.description}</p>
-              </motion.div>
-            ))}
+                  
+                  <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors duration-300">{item.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -630,6 +791,22 @@ const Index = () => {
               {
                 question: "Pour quel âge ?",
                 answer: "Nos histoires sont adaptées aux enfants de 3 à 10 ans, avec des contenus personnalisés selon l'âge."
+              },
+              {
+                question: "Combien de temps faut-il pour créer un livre ?",
+                answer: "La création d'un livre personnalisé prend seulement quelques minutes ! Notre IA travaille rapidement pour vous livrer une histoire magique."
+              },
+              {
+                question: "Puis-je modifier l'histoire après création ?",
+                answer: "Bien sûr ! Vous pouvez toujours régénérer une nouvelle version ou demander des modifications pour que l'histoire soit parfaite."
+              },
+              {
+                question: "Y a-t-il des frais d'impression supplémentaires ?",
+                answer: "L'impression physique est optionnelle et facturée séparément selon le format choisi. Le PDF reste toujours inclus dans votre abonnement."
+              },
+              {
+                question: "Les livres sont-ils disponibles en plusieurs langues ?",
+                answer: "Actuellement nos livres sont disponibles en français, mais nous travaillons sur d'autres langues pour bientôt offrir plus d'options !"
               }
             ].map((faq, index) => (
               <motion.div
@@ -648,6 +825,220 @@ const Index = () => {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Section Magique pour Enfants */}
+      <section className="py-24 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 relative overflow-hidden">
+        {/* Background Magic Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="w-full h-full bg-repeat" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c81eab' fill-opacity='0.2'%3E%3Cpath d='M50 5L55 20L70 15L60 30L75 35L60 40L70 55L55 50L50 65L45 50L30 55L40 40L25 35L40 30L30 15L45 20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }}></div>
+        </div>
+
+        <div className="container mx-auto px-4 text-center relative">
+          {/* Floating Magic Elements */}
+          <motion.div
+            animate={{ 
+              y: [0, -30, 0],
+              rotate: [0, 360],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{ 
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="absolute top-10 left-10 text-5xl z-10"
+          >
+            🌟
+          </motion.div>
+          
+          <motion.div
+            animate={{ 
+              y: [0, -20, 0],
+              x: [0, 15, 0],
+              rotate: [0, -15, 0]
+            }}
+            transition={{ 
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1
+            }}
+            className="absolute top-20 right-16 text-4xl z-10"
+          >
+            🦄
+          </motion.div>
+          
+          <motion.div
+            animate={{ 
+              y: [0, -25, 0],
+              rotate: [0, 20, 0],
+              scale: [1, 1.1, 1]
+            }}
+            transition={{ 
+              duration: 7,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 2
+            }}
+            className="absolute bottom-16 left-20 text-4xl z-10"
+          >
+            🎭
+          </motion.div>
+          
+          <motion.div
+            animate={{ 
+              y: [0, -15, 0],
+              x: [0, -10, 0],
+              scale: [1, 1.3, 1]
+            }}
+            transition={{ 
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.5
+            }}
+            className="absolute bottom-10 right-12 text-3xl z-10"
+          >
+            🚀
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto"
+          >
+            <motion.div
+              animate={{ 
+                scale: [1, 1.05, 1],
+                rotate: [0, 2, 0, -2, 0]
+              }}
+              transition={{ 
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="mb-8"
+            >
+              <div className="text-6xl mb-6">✨🌈✨</div>
+            </motion.div>
+            
+            <h2 className="text-4xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent leading-tight">
+              Chaque enfant mérite son histoire magique
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+              {[
+                {
+                  emoji: "👑",
+                  title: "Héros de leur propre aventure",
+                  description: "Ils découvrent qu'ils peuvent tout accomplir"
+                },
+                {
+                  emoji: "🌟", 
+                  title: "Confiance en soi",
+                  description: "Chaque histoire renforce leur estime personnelle"
+                },
+                {
+                  emoji: "💫",
+                  title: "Imagination sans limites",
+                  description: "Des mondes infinis où tout devient possible"
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.2 }}
+                  whileHover={{ 
+                    scale: 1.05,
+                    y: -5
+                  }}
+                  className="relative group"
+                >
+                  <motion.div
+                    animate={{ 
+                      rotate: [0, 5, -5, 0],
+                      scale: [1, 1.1, 1]
+                    }}
+                    transition={{ 
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: index * 0.5
+                    }}
+                    className="text-5xl mb-4"
+                  >
+                    {item.emoji}
+                  </motion.div>
+                  
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                  
+                  <div className="relative bg-white/30 backdrop-blur-sm rounded-3xl p-6 border border-white/20 group-hover:border-primary/30 transition-all duration-300">
+                    <h3 className="text-xl font-bold mb-3 text-primary">{item.title}</h3>
+                    <p className="text-muted-foreground">{item.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-block"
+            >
+              {user ? (
+                <Button 
+                  size="lg" 
+                  className="text-xl px-12 py-8 bg-gradient-to-r from-primary via-secondary to-accent hover:from-primary/90 hover:via-secondary/90 hover:to-accent/90 shadow-2xl hover:shadow-3xl transition-all duration-500 text-white font-bold rounded-full"
+                  asChild
+                >
+                  <Link to="/create-story">
+                    🪄 Créer la magie maintenant
+                  </Link>
+                </Button>
+              ) : (
+                <Button 
+                  size="lg" 
+                  className="text-xl px-12 py-8 bg-gradient-to-r from-primary via-secondary to-accent hover:from-primary/90 hover:via-secondary/90 hover:to-accent/90 shadow-2xl hover:shadow-3xl transition-all duration-500 text-white font-bold rounded-full"
+                  asChild
+                >
+                  <Link to="/auth">
+                    🪄 Créer la magie maintenant
+                  </Link>
+                </Button>
+              )}
+            </motion.div>
+
+            {/* Scattered Magic Elements */}
+            <div className="mt-16 text-center">
+              <motion.div
+                animate={{ 
+                  y: [0, -10, 0],
+                  opacity: [0.7, 1, 0.7]
+                }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="inline-flex items-center space-x-4 text-2xl"
+              >
+                <span>✨</span>
+                <span>🌟</span>
+                <span>💫</span>
+                <span>⭐</span>
+                <span>🌈</span>
+                <span>🦋</span>
+                <span>🦄</span>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
