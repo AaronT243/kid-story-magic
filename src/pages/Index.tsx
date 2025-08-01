@@ -31,6 +31,13 @@ const Index = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
+  // Redirect authenticated users to dashboard
+  useEffect(() => {
+    if (user) {
+      window.location.href = '/dashboard';
+    }
+  }, [user]);
+
   // Handle scroll to anchor when URL contains #plans
   useEffect(() => {
     const hash = window.location.hash;

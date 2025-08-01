@@ -8,6 +8,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import CookieConsent from "@/components/CookieConsent";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import Dashboard from "./pages/Dashboard";
 import CreateStory from "./pages/CreateStory";
 import Stories from "./pages/Stories";
 import Story from "./pages/Story";
@@ -30,6 +31,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/create-story" element={<CreateStory />} />
               <Route path="/stories" element={<Stories />} />
               <Route path="/story/:id" element={<Story />} />

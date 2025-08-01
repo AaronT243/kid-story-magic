@@ -46,10 +46,22 @@ const Navigation: React.FC<NavigationProps> = ({ showBackButton, backTo = '/stor
             {user ? (
               <>
                 <Button variant="ghost" asChild>
-                  <Link to="/stories">Mes histoires</Link>
+                  <Link to="/dashboard">Accueil</Link>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <Link to="/create-story">Créer un livre</Link>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <Link to="/stories">Mes livres</Link>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <Link to="/#plans">Mon abonnement</Link>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <Link to="/contact">Aide</Link>
                 </Button>
                 <Button variant="ghost" onClick={handleSignOut}>
-                  Se déconnecter
+                  Déconnexion
                 </Button>
               </>
             ) : (
@@ -102,12 +114,32 @@ const Navigation: React.FC<NavigationProps> = ({ showBackButton, backTo = '/stor
               {user ? (
                 <>
                   <DropdownMenuItem asChild>
+                    <Link to="/dashboard" className="w-full">
+                      Accueil
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/create-story" className="w-full">
+                      Créer un livre
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
                     <Link to="/stories" className="w-full">
-                      Mes histoires
+                      Mes livres
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/#plans" className="w-full">
+                      Mon abonnement
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/contact" className="w-full">
+                      Aide
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={handleSignOut} className="w-full">
-                    Se déconnecter
+                    Déconnexion
                   </DropdownMenuItem>
                 </>
               ) : (
