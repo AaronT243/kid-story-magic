@@ -13,6 +13,7 @@ import CreateStory from "./pages/CreateStory";
 import Stories from "./pages/Stories";
 import Story from "./pages/Story";
 import Plans from "./pages/Plans";
+import PaymentSuccess from "./pages/PaymentSuccess";
 import PrintSuccess from "./pages/PrintSuccess";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
@@ -37,6 +38,7 @@ const App = () => (
               <Route path="/stories" element={<Stories />} />
               <Route path="/story/:id" element={<Story />} />
               <Route path="/plans" element={<Plans />} />
+              <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/print-success" element={<PrintSuccess />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/privacy" element={<Privacy />} />

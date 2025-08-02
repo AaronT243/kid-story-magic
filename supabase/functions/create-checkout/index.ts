@@ -90,8 +90,8 @@ serve(async (req) => {
         },
       ],
       mode: 'subscription',
-      success_url: `${req.headers.get('origin')}/stories?success=true`,
-      cancel_url: `${req.headers.get('origin')}/stories?canceled=true`,
+      success_url: `${req.headers.get('origin')}/payment-success`,
+      cancel_url: `${req.headers.get('origin')}/plans?canceled=true`,
       metadata: {
         user_id: user.id,
         plan: plan,
