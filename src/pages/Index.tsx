@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -27,10 +27,14 @@ import { motion } from 'framer-motion';
 import girlDreamingBook from '@/assets/girl-dreaming-book.jpg';
 import boyDreamingBook from '@/assets/boy-dreaming-book.jpg';
 import motherReadingChildren from '@/assets/mother-reading-children.jpg';
+import step1MagicalNight from '@/assets/step1-magical-night.jpg';
+import step2EnchantedForest from '@/assets/step2-enchanted-forest.jpg';
+import step3MagicalBees from '@/assets/step3-magical-bees.jpg';
 
 const Index = () => {
   const { user, profile } = useAuth();
   const { t, language } = useLanguage();
+  const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
@@ -123,6 +127,7 @@ const Index = () => {
     if (!user) {
       // Si l'utilisateur n'est pas connecté, le rediriger vers l'auth avec le plan sélectionné
       setSelectedPlan(plan);
+      navigate('/auth', { state: { planSelected: plan } });
       return;
     }
 
@@ -422,7 +427,7 @@ const Index = () => {
                   icon: Users,
                   title: "Parlez-nous de votre enfant",
                   description: "Prénom, âge, passions, couleurs préférées... Plus nous en savons, plus l'histoire sera personnalisée !",
-                  image: girlDreamingBook,
+                  image: step1MagicalNight,
                   magicElement: "🦄✨"
                 },
                 {
@@ -430,7 +435,7 @@ const Index = () => {
                   icon: Wand2,
                   title: "L'IA crée la magie",
                   description: "Notre intelligence artificielle génère une histoire unique avec des illustrations sur mesure où votre enfant est le héros.",
-                  image: boyDreamingBook,
+                  image: step2EnchantedForest,
                   magicElement: "⚔️🌟"
                 },
                 {
@@ -438,7 +443,7 @@ const Index = () => {
                   icon: BookOpen,
                   title: "Téléchargez ou imprimez",
                   description: "Récupérez votre livre en PDF ou commandez une version imprimée de qualité pour garder ce trésor à vie.",
-                  image: motherReadingChildren,
+                  image: step3MagicalBees,
                   magicElement: "📖💫"
                 }
               ].map((item, index) => (
@@ -995,7 +1000,7 @@ const Index = () => {
               {user ? (
                 <Button 
                   size="lg" 
-                  className="text-xl px-12 py-8 bg-gradient-to-r from-primary via-secondary to-accent hover:from-primary/90 hover:via-secondary/90 hover:to-accent/90 shadow-2xl hover:shadow-3xl transition-all duration-500 text-white font-bold rounded-full"
+                  className="text-lg md:text-xl px-8 md:px-12 py-6 md:py-8 bg-gradient-to-r from-primary via-secondary to-accent hover:from-primary/90 hover:via-secondary/90 hover:to-accent/90 shadow-2xl hover:shadow-3xl transition-all duration-500 text-white font-bold rounded-full w-full sm:w-auto justify-center"
                   asChild
                 >
                   <Link to="/create-story">
@@ -1005,7 +1010,7 @@ const Index = () => {
               ) : (
                 <Button 
                   size="lg" 
-                  className="text-xl px-12 py-8 bg-gradient-to-r from-primary via-secondary to-accent hover:from-primary/90 hover:via-secondary/90 hover:to-accent/90 shadow-2xl hover:shadow-3xl transition-all duration-500 text-white font-bold rounded-full"
+                  className="text-lg md:text-xl px-8 md:px-12 py-6 md:py-8 bg-gradient-to-r from-primary via-secondary to-accent hover:from-primary/90 hover:via-secondary/90 hover:to-accent/90 shadow-2xl hover:shadow-3xl transition-all duration-500 text-white font-bold rounded-full w-full sm:w-auto justify-center"
                   asChild
                 >
                   <Link to="/auth">

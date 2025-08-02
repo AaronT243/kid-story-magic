@@ -30,12 +30,18 @@ const Auth: React.FC = () => {
   const location = useLocation();
 
   const from = location.state?.from?.pathname || '/';
+  const planSelected = location.state?.planSelected;
 
   useEffect(() => {
     if (user) {
-      navigate(from, { replace: true });
+      // Si un plan a été sélectionné, rediriger vers la page plans
+      if (planSelected) {
+        navigate('/plans', { replace: true });
+      } else {
+        navigate(from, { replace: true });
+      }
     }
-  }, [user, navigate, from]);
+  }, [user, navigate, from, planSelected]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({

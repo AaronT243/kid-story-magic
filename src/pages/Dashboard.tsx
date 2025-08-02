@@ -20,6 +20,7 @@ import {
   FileText
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import dashboardHeroBoyGirl from '@/assets/dashboard-hero-boy-girl.jpg';
 import heroImage from '@/assets/dashboard-hero.jpg';
 import slider1 from '@/assets/slider-1.jpg';
 import slider2 from '@/assets/slider-2.jpg';
@@ -186,11 +187,13 @@ const Dashboard = () => {
         </div>
         
         <div className="container mx-auto px-4 py-12 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Texte à gauche sur desktop */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
+              className="order-2 lg:order-1"
             >
               <motion.div
                 animate={{ 
@@ -217,7 +220,7 @@ const Dashboard = () => {
               
               <Button 
                 size="lg" 
-                className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl transition-all duration-300 mb-8" 
+                className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl transition-all duration-300" 
                 asChild
               >
                 <Link to="/create-story">
@@ -225,62 +228,18 @@ const Dashboard = () => {
                   {t('dashboard.createBook')}
                 </Link>
               </Button>
-
-              {/* Image Slider */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="relative w-full h-64 rounded-2xl overflow-hidden shadow-xl"
-              >
-                <div className="relative w-full h-full">
-                  {sliderImages.map((image, index) => (
-                    <motion.div
-                      key={index}
-                      className="absolute inset-0"
-                      initial={{ opacity: 0 }}
-                      animate={{ 
-                        opacity: currentSlideIndex === index ? 1 : 0,
-                        scale: currentSlideIndex === index ? 1 : 1.1
-                      }}
-                      transition={{ duration: 0.8 }}
-                    >
-                      <img 
-                        src={image.src} 
-                        alt={image.alt}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                    </motion.div>
-                  ))}
-                </div>
-                
-                {/* Slider Indicators */}
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                  {sliderImages.map((_, index) => (
-                    <button
-                      key={index}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                        currentSlideIndex === index 
-                          ? 'bg-white shadow-lg' 
-                          : 'bg-white/50 hover:bg-white/75'
-                      }`}
-                      onClick={() => setCurrentSlideIndex(index)}
-                    />
-                  ))}
-                </div>
-              </motion.div>
             </motion.div>
 
+            {/* Image à droite sur desktop */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
+              className="relative order-1 lg:order-2"
             >
               <img 
-                src={heroImage} 
-                alt="Illustration magique pour enfants" 
+                src={dashboardHeroBoyGirl} 
+                alt="Petit garçon et petite fille lisant ensemble un livre magique" 
                 className="w-full h-auto rounded-2xl shadow-2xl"
               />
             </motion.div>
@@ -300,7 +259,7 @@ const Dashboard = () => {
             {t('dashboard.quickActions')}
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {quickActions.map((action, index) => (
               <motion.div
                 key={index}
@@ -339,132 +298,131 @@ const Dashboard = () => {
           </div>
         </motion.section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Recent Books */}
-          <motion.section
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <Card className="bg-white/50 backdrop-blur-sm border-primary/20">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-primary">
-                  <BookOpen className="h-6 w-6" />
-                  {t('dashboard.recentBooks')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {recentStories.length > 0 ? (
-                  <div className="space-y-4">
-                    {recentStories.map((story) => (
-                      <motion.div
-                        key={story.id}
-                        whileHover={{ x: 5 }}
-                        className="flex items-center gap-4 p-4 bg-gradient-to-r from-muted/30 to-transparent rounded-lg border border-primary/10 hover:border-primary/30 transition-all duration-300"
-                      >
-                        <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                          {story.title.charAt(0)}
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-foreground">{story.title}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {t('dashboard.createdOn')} {formatDate(story.created_at)}
-                          </p>
-                        </div>
-                         <div className="flex gap-2">
-                           <Button 
-                             size="sm" 
-                             variant="outline" 
-                             className="hover:bg-primary hover:text-white"
-                             onClick={() => handleReadStory(story.id)}
-                           >
-                             <Download className="h-4 w-4" />
-                           </Button>
-                           <Button 
-                             size="sm" 
-                             variant="outline" 
-                             className="hover:bg-secondary hover:text-white"
-                             onClick={() => handleReadStory(story.id)}
-                           >
-                             <FileText className="h-4 w-4" />
-                           </Button>
-                           <Button 
-                             size="sm" 
-                             variant="outline" 
-                             className="hover:bg-accent hover:text-white"
-                             onClick={() => handlePrintStory(story.id)}
-                           >
-                             <Printer className="h-4 w-4" />
-                           </Button>
-                         </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <BookOpen className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground mb-4">{t('dashboard.noBooks')}</p>
-                    <Button className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90" asChild>
-                      <Link to="/create-story">
-                        <Wand2 className="mr-2 h-4 w-4" />
-                        {t('dashboard.createBook')}
-                      </Link>
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </motion.section>
-
-          {/* Magical Suggestions */}
-          <motion.section
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-          >
-            <Card className="bg-gradient-to-br from-secondary/10 via-accent/5 to-primary/10 border-secondary/20">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-secondary">
-                  <Sparkles className="h-6 w-6" />
-                  {t('dashboard.suggestions')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-6">
-                  <motion.div
-                    animate={{ 
-                      rotate: [0, 10, -10, 0],
-                      scale: [1, 1.1, 1]
-                    }}
-                    transition={{ 
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                    className="text-6xl mb-4"
-                  >
-                    🦄
-                  </motion.div>
-                  
-                  <p className="text-lg font-medium text-foreground mb-6 italic">
-                    "{getSuggestionText()}"
-                  </p>
-                  
-                  <Button 
-                    size="lg"
-                    className="bg-gradient-to-r from-secondary to-accent hover:from-secondary/90 hover:to-accent/90 shadow-lg hover:shadow-xl transition-all duration-300"
-                    asChild
-                  >
+        {/* Recent Books - Section séparée */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mb-12"
+        >
+          <Card className="bg-white/50 backdrop-blur-sm border-primary/20">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-primary">
+                <BookOpen className="h-6 w-6" />
+                {t('dashboard.recentBooks')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {recentStories.length > 0 ? (
+                <div className="space-y-4">
+                  {recentStories.map((story) => (
+                    <motion.div
+                      key={story.id}
+                      whileHover={{ x: 5 }}
+                      className="flex items-center gap-4 p-4 bg-gradient-to-r from-muted/30 to-transparent rounded-lg border border-primary/10 hover:border-primary/30 transition-all duration-300"
+                    >
+                      <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                        {story.title.charAt(0)}
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-foreground">{story.title}</h4>
+                        <p className="text-sm text-muted-foreground">
+                          {t('dashboard.createdOn')} {formatDate(story.created_at)}
+                        </p>
+                      </div>
+                       <div className="flex gap-2">
+                         <Button 
+                           size="sm" 
+                           variant="outline" 
+                           className="hover:bg-primary hover:text-white"
+                           onClick={() => handleReadStory(story.id)}
+                         >
+                           <Download className="h-4 w-4" />
+                         </Button>
+                         <Button 
+                           size="sm" 
+                           variant="outline" 
+                           className="hover:bg-secondary hover:text-white"
+                           onClick={() => handleReadStory(story.id)}
+                         >
+                           <FileText className="h-4 w-4" />
+                         </Button>
+                         <Button 
+                           size="sm" 
+                           variant="outline" 
+                           className="hover:bg-accent hover:text-white"
+                           onClick={() => handlePrintStory(story.id)}
+                         >
+                           <Printer className="h-4 w-4" />
+                         </Button>
+                       </div>
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <BookOpen className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                  <p className="text-muted-foreground mb-4">{t('dashboard.noBooks')}</p>
+                  <Button className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90" asChild>
                     <Link to="/create-story">
-                      <Wand2 className="mr-2 h-5 w-5" />
-                      {t('dashboard.createStory')}
+                      <Wand2 className="mr-2 h-4 w-4" />
+                      {t('dashboard.createBook')}
                     </Link>
                   </Button>
                 </div>
-              </CardContent>
-            </Card>
-          </motion.section>
-        </div>
+              )}
+            </CardContent>
+          </Card>
+        </motion.section>
+
+        {/* Magical Suggestions - Section séparée */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          <Card className="bg-gradient-to-br from-secondary/10 via-accent/5 to-primary/10 border-secondary/20">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-secondary">
+                <Sparkles className="h-6 w-6" />
+                {t('dashboard.suggestions')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-6">
+                <motion.div
+                  animate={{ 
+                    rotate: [0, 10, -10, 0],
+                    scale: [1, 1.1, 1]
+                  }}
+                  transition={{ 
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  className="text-6xl mb-4"
+                >
+                  🦄
+                </motion.div>
+                
+                <p className="text-lg font-medium text-foreground mb-6 italic">
+                  "{getSuggestionText()}"
+                </p>
+                
+                <Button 
+                  size="lg"
+                  className="bg-gradient-to-r from-secondary to-accent hover:from-secondary/90 hover:to-accent/90 shadow-lg hover:shadow-xl transition-all duration-300"
+                  asChild
+                >
+                  <Link to="/create-story">
+                    <Wand2 className="mr-2 h-5 w-5" />
+                    {t('dashboard.createStory')}
+                  </Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.section>
       </div>
 
       <Footer />
