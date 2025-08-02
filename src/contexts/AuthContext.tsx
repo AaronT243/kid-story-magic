@@ -124,6 +124,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const signOut = async () => {
     await supabase.auth.signOut();
     setProfile(null);
+    window.location.href = '/';
   };
 
   const updateProfile = async (updates: Partial<Profile>) => {

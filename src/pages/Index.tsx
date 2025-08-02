@@ -28,8 +28,8 @@ import girlDreamingBook from '@/assets/girl-dreaming-book.jpg';
 import boyDreamingBook from '@/assets/boy-dreaming-book.jpg';
 import motherReadingChildren from '@/assets/mother-reading-children.jpg';
 import step1MagicalNight from '@/assets/step1-magical-night.jpg';
-import step2EnchantedForest from '@/assets/step2-enchanted-forest.jpg';
-import step3MagicalBees from '@/assets/step3-magical-bees.jpg';
+import step2FatherReadingMagic from '@/assets/step2-father-reading-magic.jpg';
+import step3DiverseChildrenMagic from '@/assets/step3-diverse-children-magic.jpg';
 
 const Index = () => {
   const { user, profile } = useAuth();
@@ -435,7 +435,7 @@ const Index = () => {
                   icon: Wand2,
                   title: "L'IA crée la magie",
                   description: "Notre intelligence artificielle génère une histoire unique avec des illustrations sur mesure où votre enfant est le héros.",
-                  image: step2EnchantedForest,
+                  image: step2FatherReadingMagic,
                   magicElement: "⚔️🌟"
                 },
                 {
@@ -443,7 +443,7 @@ const Index = () => {
                   icon: BookOpen,
                   title: "Téléchargez ou imprimez",
                   description: "Récupérez votre livre en PDF ou commandez une version imprimée de qualité pour garder ce trésor à vie.",
-                  image: step3MagicalBees,
+                  image: step3DiverseChildrenMagic,
                   magicElement: "📖💫"
                 }
               ].map((item, index) => (
