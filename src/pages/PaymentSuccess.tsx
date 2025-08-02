@@ -40,12 +40,21 @@ const PaymentSuccess = () => {
             navigate('/create-story');
           }, 3000);
         } else {
-          throw new Error('Le paiement n\'a pas pu être vérifié');
+          // Paiement non confirmé - rediriger vers la page de checkout
+          toast.error('Paiement non confirmé. Redirection vers les plans...');
+          setTimeout(() => {
+            navigate('/plans');
+          }, 2000);
+          return;
         }
       } catch (error: any) {
         console.error('Erreur lors de la vérification du paiement:', error);
-        setError(error.message || 'Erreur lors de la vérification du paiement');
-        toast.error('Erreur lors de la vérification du paiement');
+        // En cas d'erreur - rediriger vers la page de checkout
+        toast.error('Erreur lors de la vérification du paiement. Redirection vers les plans...');
+        setTimeout(() => {
+          navigate('/plans');
+        }, 2000);
+        return;
       } finally {
         setVerifying(false);
       }
