@@ -110,6 +110,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       }
     });
+
+    // If signup successful, add user to Brevo contact list
+    if (!error && firstName && lastName) {
+      try {
+        await supabase.functions.invoke('add-to-brevo', {
+          body: {
+            email,
+            firstName,
+            lastName,
+            listId: 2, // Default list ID - you can change this
+            tags: ['new_user', 'storykid_users'] // Tags for automation
+          }
+        });
+        console.log('User successfully added to Brevo contact list');
+      } catch (brevoError) {
+        console.error('Error adding user to Brevo:', brevoError);
+        // Don't fail the signup if Brevo fails
+      }
+    }
+
     return { error };
   };
 

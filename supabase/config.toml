@@ -20,3 +20,6 @@ verify_jwt = true
 
 [functions.process-print-payment]
 verify_jwt = true
+
+[functions.add-to-brevo]
+verify_jwt = true
