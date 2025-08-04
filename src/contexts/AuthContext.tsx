@@ -96,6 +96,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const signUp = async (email: string, password: string, firstName?: string, lastName?: string) => {
+    console.log('SignUp called with:', { email, firstName, lastName });
     const redirectUrl = `${window.location.origin}/`;
     
     const { error } = await supabase.auth.signUp({
@@ -111,10 +112,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     });
 
+    console.log('Supabase signup result:', { error });
+
     // If signup successful, add user to Brevo contact list
     if (!error && firstName && lastName) {
+      console.log('Attempting to add user to Brevo...');
       try {
-        await supabase.functions.invoke('add-to-brevo', {
+        const result = await supabase.functions.invoke('add-to-brevo', {
           body: {
             email,
             firstName,
@@ -123,11 +127,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             tags: ['new_user', 'storykid_users'] // Tags for automation
           }
         });
+        console.log('Brevo function result:', result);
         console.log('User successfully added to Brevo contact list');
       } catch (brevoError) {
         console.error('Error adding user to Brevo:', brevoError);
         // Don't fail the signup if Brevo fails
       }
+    } else {
+      console.log('Skipping Brevo - error or missing names:', { error, firstName, lastName });
     }
 
     return { error };
