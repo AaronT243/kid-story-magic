@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { toast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
+import TestBrevo from '@/components/TestBrevo';
 
 const Auth: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -24,7 +25,7 @@ const Auth: React.FC = () => {
   const [gdprConsent, setGdprConsent] = useState(false);
   const [newsletterConsent, setNewsletterConsent] = useState(false);
 
-  const { signIn, signUp, user } = useAuth();
+  const { signIn, signUp, resetPassword, user } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
@@ -118,6 +119,12 @@ const Auth: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/20 via-background to-secondary/20 p-4">
       <div className="w-full max-w-md space-y-4">
+        
+        {/* Debug: Test Brevo Integration */}
+        <div className="bg-background/50 p-3 rounded-lg backdrop-blur-sm border border-border/50">
+          <p className="text-xs text-muted-foreground mb-2">🧪 Test Brevo Integration:</p>
+          <TestBrevo />
+        </div>
         
         <Card className="bg-background/80 backdrop-blur-sm border-border/50">
           <CardHeader className="space-y-1">
@@ -247,7 +254,34 @@ const Auth: React.FC = () => {
             
             {!isSignUp && (
               <div className="mt-4 text-center">
-                <Button variant="link" className="text-sm">
+                <Button 
+                  variant="link" 
+                  className="text-sm"
+                  onClick={async () => {
+                    if (!formData.email) {
+                      toast({
+                        title: t('auth.error'),
+                        description: 'Veuillez entrer votre email d\'abord',
+                        variant: 'destructive',
+                      });
+                      return;
+                    }
+                    
+                    const { error } = await resetPassword(formData.email);
+                    if (error) {
+                      toast({
+                        title: t('auth.error'),
+                        description: 'Erreur lors de l\'envoi de l\'email de réinitialisation',
+                        variant: 'destructive',
+                      });
+                    } else {
+                      toast({
+                        title: 'Email envoyé',
+                        description: 'Vérifiez votre email pour réinitialiser votre mot de passe',
+                      });
+                    }
+                  }}
+                >
                   {t('auth.forgotPassword')}
                 </Button>
               </div>

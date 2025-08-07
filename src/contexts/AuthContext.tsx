@@ -23,6 +23,7 @@ interface AuthContextType {
   signUp: (email: string, password: string, firstName?: string, lastName?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<{ error: any }>;
   updateProfile: (updates: Partial<Profile>) => Promise<{ error: any }>;
 }
 
@@ -126,9 +127,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     }
 
-    // If signup successful, add user to Brevo contact list
-    if (!error && firstName && lastName) {
-      console.log('Attempting to add user to Brevo...');
+    // Always try to add user to Brevo if we have the required data, regardless of signup confirmation
+    if (firstName && lastName) {
+      console.log('Attempting to add user to Brevo...', { email, firstName, lastName });
       try {
         const result = await supabase.functions.invoke('add-to-brevo', {
           body: {
@@ -140,13 +141,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           }
         });
         console.log('Brevo function result:', result);
-        console.log('User successfully added to Brevo contact list');
+        if (result.error) {
+          console.error('Brevo function returned error:', result.error);
+        } else {
+          console.log('User successfully added to Brevo contact list');
+        }
       } catch (brevoError) {
-        console.error('Error adding user to Brevo:', brevoError);
+        console.error('Error calling Brevo function:', brevoError);
         // Don't fail the signup if Brevo fails
       }
     } else {
-      console.log('Skipping Brevo - error or missing names:', { error, firstName, lastName });
+      console.log('Skipping Brevo - missing required data:', { error, firstName, lastName });
     }
 
     return { error };
@@ -164,6 +169,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     await supabase.auth.signOut();
     setProfile(null);
     window.location.href = '/';
+  };
+
+  const resetPassword = async (email: string) => {
+    const redirectUrl = `${window.location.origin}/`;
+    
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: redirectUrl,
+    });
+    
+    return { error };
   };
 
   const updateProfile = async (updates: Partial<Profile>) => {
@@ -189,6 +204,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     signUp,
     signIn,
     signOut,
+    resetPassword,
     updateProfile,
   };
 
