@@ -113,6 +113,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     });
 
     console.log('Supabase signup result:', { error });
+    
+    // Handle specific error types
+    if (error) {
+      if (error.message.includes('rate limit')) {
+        console.log('Rate limit error detected');
+        return { error: new Error('Trop de tentatives d\'inscription. Veuillez attendre quelques minutes avant de réessayer.') };
+      }
+      if (error.message.includes('authentication failed')) {
+        console.log('SMTP authentication error detected');
+        return { error: new Error('Problème de configuration email. Veuillez contacter le support.') };
+      }
+    }
 
     // If signup successful, add user to Brevo contact list
     if (!error && firstName && lastName) {
