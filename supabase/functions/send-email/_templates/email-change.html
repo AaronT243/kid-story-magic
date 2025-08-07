@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation changement d'email - StoryKid AI</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #5c36dc 0%, #c81eab 50%, #E3337B 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(92, 54, 220, 0.3);
+        }
+        .header {
+            background: linear-gradient(135deg, #5c36dc, #c81eab);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .emoji {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .title {
+            font-size: 24px;
+            color: #5c36dc;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .message {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #5c36dc, #E3337B);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 8px 25px rgba(92, 54, 220, 0.4);
+            transition: transform 0.3s ease;
+        }
+        .button:hover {
+            transform: translateY(-2px);
+        }
+        .footer {
+            background: #f9f9f9;
+            padding: 30px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        .stars {
+            color: #e2ae9e;
+            font-size: 20px;
+            margin: 20px 0;
+        }
+        .info-box {
+            background: #e8f4fd;
+            border: 1px solid #bee5eb;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">📧 STORYKID AI</div>
+            <div class="subtitle">Mise à jour de votre profil</div>
+        </div>
+        
+        <div class="content">
+            <div class="emoji">🔄</div>
+            <div class="title">Confirmez votre nouvelle adresse email</div>
+            <div class="message">
+                Presque fini ! Pour finaliser le changement de votre adresse email et continuer à recevoir toutes les nouvelles de StoryKid AI, cliquez sur le bouton ci-dessous.
+            </div>
+            <div class="info-box">
+                <strong>📍 Important :</strong> Après confirmation, vous recevrez tous vos emails StoryKid AI sur cette nouvelle adresse.
+            </div>
+            <div class="stars">📧 ⭐ ✨ ⭐ 📧</div>
+            <a href="{{ .ConfirmationURL }}" class="button">
+                ✅ Confirmer ma nouvelle adresse
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p>Si vous n'avez pas demandé ce changement, contactez-nous immédiatement.</p>
+            <div class="stars">🌟</div>
+            <p><strong>L'équipe StoryKid AI</strong><br>
+            Toujours connectés à vos aventures !</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion magique - StoryKid AI</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #5c36dc 0%, #c81eab 50%, #E3337B 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(92, 54, 220, 0.3);
+        }
+        .header {
+            background: linear-gradient(135deg, #5c36dc, #c81eab);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .emoji {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .title {
+            font-size: 24px;
+            color: #5c36dc;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .message {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #5c36dc, #E3337B);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 8px 25px rgba(92, 54, 220, 0.4);
+            transition: transform 0.3s ease;
+        }
+        .button:hover {
+            transform: translateY(-2px);
+        }
+        .footer {
+            background: #f9f9f9;
+            padding: 30px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        .stars {
+            color: #e2ae9e;
+            font-size: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">✨ STORYKID AI</div>
+            <div class="subtitle">Connexion instantanée</div>
+        </div>
+        
+        <div class="content">
+            <div class="emoji">🪄</div>
+            <div class="title">Votre lien de connexion magique !</div>
+            <div class="message">
+                Abracadabra ! Votre portail vers l'univers StoryKid AI est prêt. Un simple clic sur le bouton ci-dessous et vous voilà connecté(e) pour créer de nouvelles aventures !
+            </div>
+            <div class="stars">🌟 ✨ 🪄 ✨ 🌟</div>
+            <a href="{{ .ConfirmationURL }}" class="button">
+                🚀 Se connecter par magie
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p>Ce lien magique expire dans 1 heure pour protéger votre compte.</p>
+            <div class="stars">🌟</div>
+            <p><strong>L'équipe StoryKid AI</strong><br>
+            Vos magiciens des histoires !</p>
+        </div>
+    </div>
+</body>
+</html>
