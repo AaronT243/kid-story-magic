@@ -10,8 +10,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { toast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
-import TestBrevo from '@/components/TestBrevo';
-
 const Auth: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -119,13 +117,6 @@ const Auth: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/20 via-background to-secondary/20 p-4">
       <div className="w-full max-w-md space-y-4">
-        
-        {/* Debug: Test Brevo Integration */}
-        <div className="bg-background/50 p-3 rounded-lg backdrop-blur-sm border border-border/50">
-          <p className="text-xs text-muted-foreground mb-2">🧪 Test Brevo Integration:</p>
-          <TestBrevo />
-        </div>
-        
         <Card className="bg-background/80 backdrop-blur-sm border-border/50">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold text-center">
