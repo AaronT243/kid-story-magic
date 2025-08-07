@@ -39,7 +39,6 @@ const Privacy = () => {
             <h2 className="text-xl font-semibold mb-4">4. Services tiers</h2>
             <ul className="list-disc pl-6 space-y-2">
               <li>Paiement sécurisé via Stripe</li>
-              <li>Envoi d'emails via Brevo (Sendinblue)</li>
               <li>Génération d'images et de textes via OpenAI API</li>
             </ul>
           </section>

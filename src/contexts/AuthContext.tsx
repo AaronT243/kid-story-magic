@@ -127,33 +127,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     }
 
-    // Always try to add user to Brevo if we have the required data, regardless of signup confirmation
-    if (firstName && lastName) {
-      console.log('Attempting to add user to Brevo...', { email, firstName, lastName });
-      try {
-        const result = await supabase.functions.invoke('add-to-brevo', {
-          body: {
-            email,
-            firstName,
-            lastName,
-            listId: 2, // Default list ID - you can change this
-            tags: ['new_user', 'storykid_users'] // Tags for automation
-          }
-        });
-        console.log('Brevo function result:', result);
-        if (result.error) {
-          console.error('Brevo function returned error:', result.error);
-        } else {
-          console.log('User successfully added to Brevo contact list');
-        }
-      } catch (brevoError) {
-        console.error('Error calling Brevo function:', brevoError);
-        // Don't fail the signup if Brevo fails
-      }
-    } else {
-      console.log('Skipping Brevo - missing required data:', { error, firstName, lastName });
-    }
-
     return { error };
   };
 
