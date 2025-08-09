@@ -119,7 +119,7 @@ const Plans = () => {
       period: 'par mois',
       description: 'Parfait pour découvrir',
       features: [
-        '1 histoire personnalisée par mois',
+        '1 histoire personnalisée uniquement',
         'Illustrations incluses',
         'Thèmes variés',
         'Export PDF'
@@ -133,7 +133,7 @@ const Plans = () => {
       name: 'Plan Starter',
       price: '9€',
       period: 'par mois',
-      description: '3 histoires par mois',
+      description: 'Pour créer d\'autres livres',
       features: [
         '3 histoires personnalisées par mois',
         'Illustrations premium incluses',
