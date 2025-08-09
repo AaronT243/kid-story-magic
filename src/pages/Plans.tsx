@@ -116,10 +116,10 @@ const Plans = () => {
       id: 'free',
       name: 'Plan Gratuit',
       price: '0€',
-      period: 'par mois',
-      description: 'Parfait pour découvrir',
+      period: '',
+      description: 'Pour découvrir le service',
       features: [
-        '1 histoire personnalisée uniquement',
+        '1 histoire personnalisée au total',
         'Illustrations incluses',
         'Thèmes variés',
         'Export PDF'

@@ -665,7 +665,7 @@ const Index = () => {
                 period: "/mois",
                 description: "Parfait pour commencer l'aventure",
                 features: [
-                  "3 livres personnalisés par mois",
+                  "3 histoires personnalisées par mois",
                   "Histoires uniques générées par IA", 
                   "Illustrations sur mesure",
                   "Téléchargement PDF",
